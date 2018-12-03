@@ -1,3 +1,4 @@
 ﻿  main.cpp
-h:\programming_project_p3\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(91): warning C4715: 'WinProcedure': not all control paths return a value
-  BareBones_win32_attempt.vcxproj -> H:\Programming_Project_P3\Programming-Project\BareBones_win32\Debug\BareBones_win32_attempt.exe
+c:\users\nicol\onedrive - aalborg universitet\3rd semester\pcss\mini project\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(91): warning C4715: 'WinProcedure': not all control paths return a value
+  LINK : C:\Users\nicol\OneDrive - Aalborg Universitet\3rd semester\PCSS\Mini project\Programming-Project\BareBones_win32\Debug\BareBones_win32_attempt.exe not found or not built by the last incremental link; performing full link
+  BareBones_win32_attempt.vcxproj -> C:\Users\nicol\OneDrive - Aalborg Universitet\3rd semester\PCSS\Mini project\Programming-Project\BareBones_win32\Debug\BareBones_win32_attempt.exe
