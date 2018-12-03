@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1543849134 source:c:\users\razvan danezu\desktop\media\3rd sem\programming\server\main.cpp
+	<iostream>
+	<conio.h>
+	<stdio.h>
+	<winsock2.h>
+	<windows.h>
+	<string>
+	<sstream>
+
