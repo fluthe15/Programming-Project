@@ -1,0 +1,3 @@
+﻿  main.cpp
+c:\users\ckrit\documents\visual studio 2017\projects\barebones_win32\barebones_win32_attempt\main.cpp(91): warning C4715: 'WinProcedure': not all control paths return a value
+  BareBones_win32_attempt.vcxproj -> C:\Users\ckrit\Documents\Visual Studio 2017\Projects\BareBones_win32\Debug\BareBones_win32_attempt.exe
