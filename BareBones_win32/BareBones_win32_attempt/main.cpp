@@ -10,6 +10,14 @@ int winWidth, winHeight, winPosX, winPosY, monWidth, monHeight;
 // this method is used by the WndProc (window procedure) that handles messages
 LRESULT CALLBACK WinProcedure(HWND, UINT, WPARAM, LPARAM);
 
+// here we declare a method for the menuline in the top of the window plus some things related to it
+void AddMenus(HWND);
+HMENU hMenu;						// we declare a HEADERMENU (menuline)
+
+// define the choices as constants for ease
+constexpr auto GAME_OPTION_START = 1;
+constexpr auto GAME_OPTION_CLOSE = 2;
+constexpr auto SETTINGS_OPTION_RESIZE = 3;
 
 // the win32 kind of main().. it needs a reference for different things.
 // hInst = instance of application, aka id of app
@@ -79,7 +87,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 	{
 		// translate the message at the adress of msg
 		TranslateMessage(&msg);
-		// dispatch the message at the adress of msg to winProcedure
+		// send the message at the adress of msg to winProcedure
 		DispatchMessage(&msg);
 	}
 	
@@ -91,6 +99,26 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	// switch case to see the value of msg
 	switch (msg) 
 	{
+	// this is called every time a menu line item or button has been clicked
+	case WM_COMMAND:
+		// here we use wp(WPARAM) to identify what was clicked
+		switch (wp)
+		{
+		case GAME_OPTION_START:
+			MessageBeep(MB_OK);		// make a little beep
+			break;
+		case GAME_OPTION_CLOSE:
+			DestroyWindow(hWnd);	// close the window
+			break;
+		case SETTINGS_OPTION_RESIZE:
+			MessageBeep(MB_OK);		// make a little beep
+			break;
+		}
+		break;
+	// the message we expect here is create (called when the window is first created)
+	case WM_CREATE:
+		AddMenus(hWnd);								// we add the top menuline here
+		break;
 	// the message we expect here is destroy (close window with x)
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -100,4 +128,31 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		return DefWindowProcW(hWnd, msg, wp, lp);
 
 	}
+}
+
+// this is the method that gives us the top menuline..
+void AddMenus(HWND hWnd) 
+{
+	hMenu = CreateMenu();	// here we actually assign hMenu to be a new menu
+	// here we create the contents of the menuline
+	HMENU hGameMenu = CreateMenu();
+	HMENU hSettings = CreateMenu();
+	HMENU hSettingsSubMenu = CreateMenu();
+	// and fill them out
+	AppendMenu(hGameMenu, MF_STRING, GAME_OPTION_START, "Start");
+	AppendMenu(hGameMenu, MFT_SEPARATOR, NULL, NULL);
+	AppendMenu(hGameMenu, MF_STRING, GAME_OPTION_CLOSE, "Close");
+
+	AppendMenu(hSettings, MF_POPUP,(UINT_PTR)hSettingsSubMenu, "Window");
+	AppendMenu(hSettingsSubMenu, MF_STRING, SETTINGS_OPTION_RESIZE, "Resize");
+	// now that we have a menuline and some content, we need to add the content
+	// we use AppendMenu on hMenu, we call MF_POPUP because we want it to show a popup list
+	// we also specify the ID of the menu, as a pointer
+	// finally we call the new menu option by name.
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hGameMenu, "Game");
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hSettings, "Settings");
+	
+	
+	SetMenu(hWnd, hMenu);	// here we assign it to the window
+
 }
