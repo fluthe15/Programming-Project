@@ -2,6 +2,9 @@
 #include <string>
 #include <iostream>
 
+// variables to control size and placement of the window
+int winWidth, winHeight, winPosX, winPosY, monWidth, monHeight;
+
 
 
 // this method is used by the WndProc (window procedure) that handles messages
@@ -37,15 +40,24 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 	// we do a quick early-out check to see if we can register
 	if (!RegisterClassW(&wc)) { return -1; }
 
+	// we will assign the values for position and size of the window:
+	monHeight = 1080; //GetSystemMetrics(SM_CXSCREEN);
+	monWidth = 1920; //GetSystemMetrics(SM_CYSCREEN);   <- TODO: these don't give the desired result, solution pending! 
+	
+	winWidth = 800;
+	winHeight = 550;
+	winPosX = monWidth / 2 - winWidth / 2;
+	winPosY = monHeight / 2 - winHeight / 2;
+	
 	// and then we move on to creating a window:
 	CreateWindowW(
 		L"MyWindowClass",					// create it from the class we created
 		L"WindowName",						// the name that will be displayed on the window
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE, 	// this is the style of the window via a constant
-		100,								// position of window (X)
-		100,								// position of window (Y)
-		500,								// size of window (X)
-		350,								// size of window (Y)
+		winPosX,								// position of window (X)
+		winPosY,								// position of window (Y)
+		winWidth,								// size of window (X)
+		winHeight,								// size of window (Y)
 		NULL,								// parent of window, we have none so NULL
 		NULL,								// hMenu is also NULL, its not a menu...
 		NULL,								// the hInstance, we pass NULL because the instance is set above
