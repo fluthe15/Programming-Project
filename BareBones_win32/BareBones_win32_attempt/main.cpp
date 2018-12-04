@@ -19,13 +19,14 @@ constexpr auto GAME_OPTION_START = 1;
 constexpr auto GAME_OPTION_CLOSE = 2;
 constexpr auto SETTINGS_OPTION_RESIZE = 3;
 constexpr auto SETTINGS_CHANGE_TITLE = 4;
+constexpr auto BUTTON_SET_TITLE = 5;
 
 // here we declare a method for the content of the window
 void AddControls(HWND);
 // the edit style needs a handler so we can get and manipulate user input
 HWND hEdit;							// we declare the edit handler
 
-void PopUp(HWND);					// we also declare a popup method
+void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
 
 // the win32 kind of main().. it needs a reference for different things.
 // hInst = instance of application, aka id of app
@@ -108,9 +109,10 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		// here we use wp(WPARAM) to identify what was clicked
 		switch (wp)
 		{
+		wchar_t text[100];		// a place to save the input from the user
 		case GAME_OPTION_START:
 			MessageBeep(MB_OK);		// make a little beep
-			PopUp(hWnd);			// a popup to replace content....
+			PopUp(hWnd, L"404 Game not found!", L"Warning");			// a popup to replace content....
 			break;
 		case GAME_OPTION_CLOSE:
 			DestroyWindow(hWnd);	// close the window
@@ -119,9 +121,12 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 			MessageBeep(MB_OK);		// make a little beep
 			break;
 		case SETTINGS_CHANGE_TITLE:
-			wchar_t text[100];		// a place to save the input from the user
-				GetWindowTextW(hEdit, text, 100); // and so we save contents of hEdit to text..
-				SetWindowTextW(hWnd, text);
+			GetWindowTextW(hEdit, text, 100); // and so we save contents of hEdit to text..
+			SetWindowTextW(hWnd, text);
+			break;
+		case BUTTON_SET_TITLE:
+			GetWindowTextW(hEdit, text, 100); // and so we save contents of hEdit to text..
+			SetWindowTextW(hWnd, text);
 			break;
 		}
 		break;
@@ -208,11 +213,28 @@ void AddControls(HWND hWnd)
 		NULL,
 		NULL
 	);
+
+	CreateWindowW(
+		L"Button",
+		L"Set Title",
+		WS_VISIBLE | WS_CHILD,
+		winWidth / 2 - (swWidth) / 2,
+		winHeight / 2 - ((swHeight) / 2) + (offset * 32),
+		swWidth,
+		swHeight - 50,
+		hWnd,
+		(HMENU) BUTTON_SET_TITLE,
+		NULL,
+		NULL,
+		NULL
+	);
 }
 
 	// this is the method that makes a popup!
-void PopUp(HWND hWnd)
+void PopUp(HWND hWnd, LPCWSTR _text, LPCWSTR _name)
 {
+	LPCWSTR text = _text;
+	LPCWSTR name = _name;
 	// we create a message-box as a test, MB_OK is the template, 
-	MessageBox(hWnd,"CONTENT","Test", MB_OK);
+	MessageBoxW(hWnd, (LPCWSTR)text, (LPCWSTR)name, MB_OK);
 }
