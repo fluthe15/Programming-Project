@@ -10,12 +10,28 @@ int winWidth, winHeight, winPosX, winPosY, monWidth, monHeight;
 // this method is used by the WndProc (window procedure) that handles messages
 LRESULT CALLBACK WinProcedure(HWND, UINT, WPARAM, LPARAM);
 
+// here we declare a method for the menuline in the top of the window plus some things related to it
+void AddMenus(HWND);
+HMENU hMenu;						// we declare a HEADERMENU (menuline)
+
+// define the choices as constants for easy reading
+constexpr auto GAME_OPTION_START = 1;
+constexpr auto GAME_OPTION_CLOSE = 2;
+constexpr auto SETTINGS_OPTION_RESIZE = 3;
+constexpr auto SETTINGS_CHANGE_TITLE = 4;
+constexpr auto BUTTON_SET_TITLE = 5;
+
+// here we declare a method for the content of the window
+void AddControls(HWND);
+// the edit style needs a handler so we can get and manipulate user input
+HWND hEdit;							// we declare the edit handler
+
+void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
 
 // the win32 kind of main().. it needs a reference for different things.
 // hInst = instance of application, aka id of app
 // LPSTR = arguments passed to program from cmdline
 // ncmdshow = tells us how to display the window
-
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow) 
 {
 	
@@ -67,10 +83,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 
 	);
 
-	// we create a message-box as a test, MB_OK is the template, 
-	// the NULL is the window handler, but since we have no window yet,
-	// it is set to null, which means it will just be standalone..
-	MessageBox(FindWindowW(L"MyWindowClass", L"WindowName"), "the quick brown fox jumped over the lazy dog", "caption of messagebox", MB_OK);
+	
 
 	// the loop responsible for continually drawing our window
 	// this loop will break either when we press the button or otherwise close the window
@@ -79,7 +92,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdsho
 	{
 		// translate the message at the adress of msg
 		TranslateMessage(&msg);
-		// dispatch the message at the adress of msg to winProcedure
+		// send the message at the adress of msg to winProcedure
 		DispatchMessage(&msg);
 	}
 	
@@ -91,6 +104,37 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 	// switch case to see the value of msg
 	switch (msg) 
 	{
+	// this is called every time a menu line item or button has been clicked
+	case WM_COMMAND:
+		// here we use wp(WPARAM) to identify what was clicked
+		switch (wp)
+		{
+		wchar_t text[100];		// a place to save the input from the user
+		case GAME_OPTION_START:
+			MessageBeep(MB_OK);		// make a little beep
+			PopUp(hWnd, L"404 Game not found!", L"Warning");			// a popup to replace content....
+			break;
+		case GAME_OPTION_CLOSE:
+			DestroyWindow(hWnd);	// close the window
+			break;
+		case SETTINGS_OPTION_RESIZE:
+			MessageBeep(MB_OK);		// make a little beep
+			break;
+		case SETTINGS_CHANGE_TITLE:
+			GetWindowTextW(hEdit, text, 100); // and so we save contents of hEdit to text..
+			SetWindowTextW(hWnd, text);
+			break;
+		case BUTTON_SET_TITLE:
+			GetWindowTextW(hEdit, text, 100); // and so we save contents of hEdit to text..
+			SetWindowTextW(hWnd, text);
+			break;
+		}
+		break;
+	// the message we expect here is create (called when the window is first created)
+	case WM_CREATE:
+		AddMenus(hWnd);								// we add the top menuline here
+		AddControls(hWnd);
+		break;
 	// the message we expect here is destroy (close window with x)
 	case WM_DESTROY:
 		PostQuitMessage(0);
@@ -100,4 +144,97 @@ LRESULT CALLBACK WinProcedure(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
 		return DefWindowProcW(hWnd, msg, wp, lp);
 
 	}
+}
+
+// this is the method that gives us the top menuline..
+void AddMenus(HWND hWnd) 
+{
+	hMenu = CreateMenu();	// here we actually assign hMenu to be a new menu
+	// here we create the contents of the menuline
+	HMENU hGameMenu = CreateMenu();
+	HMENU hSettings = CreateMenu();
+	HMENU hSettingsSubMenu = CreateMenu();
+	// and fill them out
+	AppendMenu(hGameMenu, MF_STRING, GAME_OPTION_START, "Start");
+	AppendMenu(hGameMenu, MFT_SEPARATOR, NULL, NULL);
+	AppendMenu(hGameMenu, MF_STRING, GAME_OPTION_CLOSE, "Close");
+
+	AppendMenu(hSettings, MF_POPUP,(UINT_PTR)hSettingsSubMenu, "Window");
+	AppendMenu(hSettingsSubMenu, MF_STRING, SETTINGS_OPTION_RESIZE, "Resize");
+	AppendMenu(hSettingsSubMenu, MF_STRING, SETTINGS_CHANGE_TITLE, "Change Window Title");
+	// now that we have a menuline and some content, we need to add the content
+	// we use AppendMenu on hMenu, we call MF_POPUP because we want it to show a popup list
+	// we also specify the ID of the menu, as a pointer
+	// finally we call the new menu option by name.
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hGameMenu, "Game");
+	AppendMenu(hMenu, MF_POPUP, (UINT_PTR)hSettings, "Settings");
+	
+	
+	SetMenu(hWnd, hMenu);	// here we assign it to the window
+
+}
+
+// this is the method that adds content in the window (they are called controls)
+
+void AddControls(HWND hWnd)
+{
+	
+	int swWidth = 200;
+	int swHeight = 100;
+	int offset = 5;
+	// first we create a window to contain the control
+	// we initiate it much like the main window, but we use SS_CENTER (centering text via "static style")
+	// and WS_CHILD because it is a child of the main window..
+	CreateWindowW(
+		L"static",
+		L"Enter New Title of Window:\n(change through settings)",
+		WS_VISIBLE | WS_CHILD | SS_CENTER,
+		winWidth / 2 - swWidth / 2,
+		winHeight / 2 - swWidth / 2,
+		swWidth,
+		swHeight,
+		hWnd,
+		NULL,
+		NULL,
+		NULL
+		);
+	// we can do the same, but using edit style, so it can react to user input..
+	// that's why we save this one as a variable as opposed to the others!
+	hEdit = CreateWindowW(
+		L"Edit",
+		L"...",
+		WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE,
+		winWidth / 2 - (swWidth + 100) / 2,
+		winHeight / 2 - ((swHeight + 50) / 2) + (offset * 5),
+		swWidth + 100,
+		swHeight + 50,
+		hWnd,
+		NULL,
+		NULL,
+		NULL
+	);
+
+	CreateWindowW(
+		L"Button",
+		L"Set Title",
+		WS_VISIBLE | WS_CHILD,
+		winWidth / 2 - (swWidth) / 2,
+		winHeight / 2 - ((swHeight) / 2) + (offset * 32),
+		swWidth,
+		swHeight - 50,
+		hWnd,
+		(HMENU) BUTTON_SET_TITLE,
+		NULL,
+		NULL,
+		NULL
+	);
+}
+
+	// this is the method that makes a popup!
+void PopUp(HWND hWnd, LPCWSTR _text, LPCWSTR _name)
+{
+	LPCWSTR text = _text;
+	LPCWSTR name = _name;
+	// we create a message-box as a test, MB_OK is the template, 
+	MessageBoxW(hWnd, (LPCWSTR)text, (LPCWSTR)name, MB_OK);
 }
