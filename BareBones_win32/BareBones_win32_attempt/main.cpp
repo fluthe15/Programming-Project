@@ -187,7 +187,7 @@ void AddControls(HWND hWnd)
 	// and WS_CHILD because it is a child of the main window..
 	CreateWindowW(
 		L"static",
-		L"Enter New Title of Window:\n(change through settings)",
+		L"Enter New Title of Window:",
 		WS_VISIBLE | WS_CHILD | SS_CENTER,
 		winWidth / 2 - swWidth / 2,
 		winHeight / 2 - swWidth / 2,
@@ -236,5 +236,5 @@ void PopUp(HWND hWnd, LPCWSTR _text, LPCWSTR _name)
 	LPCWSTR text = _text;
 	LPCWSTR name = _name;
 	// we create a message-box as a test, MB_OK is the template, 
-	MessageBoxW(hWnd, (LPCWSTR)text, (LPCWSTR)name, MB_OK);
+	MessageBoxW(hWnd, text, name, MB_OK);
 }

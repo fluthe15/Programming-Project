@@ -1,4 +1,4 @@
 ﻿  main.cpp
-h:\programming_project_p3\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(232): warning C4002: too many arguments for function-like macro invocation 'CreateWindowW'
-h:\programming_project_p3\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(149): warning C4715: 'WinProcedure': not all control paths return a value
+h:\programming_project_p3\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(230): warning C4002: too many arguments for function-like macro invocation 'CreateWindowW'
+h:\programming_project_p3\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(147): warning C4715: 'WinProcedure': not all control paths return a value
   BareBones_win32_attempt.vcxproj -> H:\Programming_Project_P3\Programming-Project\BareBones_win32\Debug\BareBones_win32_attempt.exe
