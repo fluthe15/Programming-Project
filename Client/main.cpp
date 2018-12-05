@@ -19,6 +19,7 @@ int main()
 {
     SOCKET sock;
     SOCKADDR_IN address;
+    char mark = 'O';
 
     long ok;
     char MESSAGE[200];
@@ -41,6 +42,30 @@ int main()
        string msg;
        cout<<"Enter message:\t";
        cin>>msg;
+
+       board();
+
+       if (msg == "1" && square[1] == '1')
+       square[1] = mark;
+       else if (msg == "2" && square[2] == '2')
+       square[2] = mark;
+       else if (msg == "3" && square[3] == '3')
+       square[3] = mark;
+       else if (msg == "4" && square[4] == '4')
+       square[4] = mark;
+       else if (msg == "5" && square[5] == '5')
+       square[5] = mark;
+       else if (msg == "6" && square[6] == '6')
+       square[6] = mark;
+       else if (msg == "7" && square[7] == '7')
+       square[7] = mark;
+       else if (msg == "8" && square[8] == '8')
+       square[8] = mark;
+       else if (msg == "9" && square[9] == '9')
+       square[9] = mark;
+
+       else
+       cout<<"Invalid move ";
 
        const char* s = msg.c_str();
        ok = send(sock, s, 1024,NULL);

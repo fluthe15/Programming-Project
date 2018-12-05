@@ -21,6 +21,8 @@ int main()
     SOCKADDR_IN address;
     int addrsize = sizeof(address);
 
+    char mark = 'X';
+
     long ok;
     char MESSAGE[200];
 
@@ -49,7 +51,29 @@ int main()
 
             string msg;
             msg = MESSAGE;
-            cout<<"Client says:\t"<<msg<<endl;
+
+            board();
+
+            if (msg == "1" && square[1] == '1')
+            square[1] = mark;
+            else if (msg == "2" && square[2] == '2')
+            square[2] = mark;
+            else if (msg == "3" && square[3] == '3')
+            square[3] = mark;
+            else if (msg == "4" && square[4] == '4')
+            square[4] = mark;
+            else if (msg == "5" && square[5] == '5')
+            square[5] = mark;
+            else if (msg == "6" && square[6] == '6')
+            square[6] = mark;
+            else if (msg == "7" && square[7] == '7')
+            square[7] = mark;
+            else if (msg == "8" && square[8] == '8')
+            square[8] = mark;
+            else if (msg == "9" && square[9] == '9')
+            square[9] = mark;
+            else
+			cout<<"Invalid move ";
 
             //string reply;
             cout<<"Enter reply:\t";
