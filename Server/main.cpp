@@ -76,7 +76,7 @@ int main()
 			cout<<"Invalid move ";
 
             //string reply;
-            cout<<"You are player 2 ! please enter a number:";
+            cout<<"You are player 2, please enter a number:";
             cin>> msg;
 
             const char* s = msg.c_str();
@@ -87,7 +87,7 @@ int main()
 
 void board()
 {
-	cout << "Welcome to Tic Tac Toe";
+	cout << "Welcome to Tic Tac Toe!";
 	cout << endl;
 	cout << "     |     |     " << endl;
 	cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;

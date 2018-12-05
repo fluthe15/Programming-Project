@@ -40,7 +40,7 @@ int main()
        board();
 
        string msg;
-       cout<<"You are player 1 please enter a number:"<<endl;
+       cout<<"You are player 1, please enter a number:"<<endl;
        cin>>msg;
 
        if (msg == "1" && square[1] == '1')
@@ -75,7 +75,7 @@ int main()
 
 void board()
 {
-	cout << "Welcome to Tic Tac Toe";
+	cout << "Welcome to Tic Tac Toe!";
 	cout << endl;
 	cout << "     |     |     " << endl;
 	cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
