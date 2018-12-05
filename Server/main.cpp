@@ -8,8 +8,11 @@
 
 #define SCK_VERSION 0x0202
 
-
 using namespace std;
+
+void board();
+
+char square[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 int main()
 {
@@ -48,14 +51,37 @@ int main()
             msg = MESSAGE;
             cout<<"Client says:\t"<<msg<<endl;
 
-            string reply;
+            //string reply;
             cout<<"Enter reply:\t";
-            cin>> reply;
+            cin>> msg;
 
-            const char* s = reply.c_str();
+            const char* s = msg.c_str();
             ok = send(ConSock, s, 1024, NULL);
 
         }
     }
+}
 
+
+void board()
+{
+	cout << "\n\n\tTic Tac Toe\n\n";
+
+	cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
+	cout << endl;
+
+	cout << "     |     |     " << endl;
+	cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
+
+	cout << "_____|_____|_____" << endl;
+	cout << "     |     |     " << endl;
+
+	cout << "  " << square[4] << "  |  " << square[5] << "  |  " << square[6] << endl;
+
+	cout << "_____|_____|_____" << endl;
+	cout << "     |     |     " << endl;
+
+	cout << "  " << square[7] << "  |  " << square[8] << "  |  " << square[9] << endl;
+
+	cout << "     |     |     " << endl << endl;
 }
