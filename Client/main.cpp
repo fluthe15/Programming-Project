@@ -14,12 +14,11 @@ void board();
 
 char square[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-
 int main()
 {
     SOCKET sock;
     SOCKADDR_IN address;
-    char mark = 'O';
+    char mark = 'X';
 
     long ok;
     char MESSAGE[200];
@@ -38,12 +37,11 @@ int main()
        address.sin_port = htons(10102);
 
        connect(sock, (SOCKADDR*)&address, sizeof(address));
+       board();
 
        string msg;
-       cout<<"Enter message:\t";
+       cout<<"You are player 1 please enter a number:"<<endl;
        cin>>msg;
-
-       board();
 
        if (msg == "1" && square[1] == '1')
        square[1] = mark;
@@ -63,39 +61,29 @@ int main()
        square[8] = mark;
        else if (msg == "9" && square[9] == '9')
        square[9] = mark;
-
        else
        cout<<"Invalid move ";
 
        const char* s = msg.c_str();
        ok = send(sock, s, 1024,NULL);
        ok = recv(sock, MESSAGE, sizeof(MESSAGE), NULL);
-       string reply;
-       reply = MESSAGE;
-       cout<<"Server says:\t"<<reply<<endl;
-
+       //string reply;
+       //reply = MESSAGE;
+       //cout<<"Server says:\t"<<reply<<endl;
     }
 }
 
 void board()
 {
-	cout << "\n\n\tTic Tac Toe\n\n";
-
-	cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
+	cout << "Welcome to Tic Tac Toe";
 	cout << endl;
-
 	cout << "     |     |     " << endl;
 	cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
-
 	cout << "_____|_____|_____" << endl;
 	cout << "     |     |     " << endl;
-
 	cout << "  " << square[4] << "  |  " << square[5] << "  |  " << square[6] << endl;
-
 	cout << "_____|_____|_____" << endl;
 	cout << "     |     |     " << endl;
-
 	cout << "  " << square[7] << "  |  " << square[8] << "  |  " << square[9] << endl;
-
 	cout << "     |     |     " << endl << endl;
 }

@@ -21,7 +21,7 @@ int main()
     SOCKADDR_IN address;
     int addrsize = sizeof(address);
 
-    char mark = 'X';
+    char mark = 'O';
 
     long ok;
     char MESSAGE[200];
@@ -49,10 +49,10 @@ int main()
         {
             ok = recv(ConSock, MESSAGE, sizeof(MESSAGE), NULL);
 
+            board();
+
             string msg;
             msg = MESSAGE;
-
-            board();
 
             if (msg == "1" && square[1] == '1')
             square[1] = mark;
@@ -76,36 +76,26 @@ int main()
 			cout<<"Invalid move ";
 
             //string reply;
-            cout<<"Enter reply:\t";
+            cout<<"You are player 2 ! please enter a number:";
             cin>> msg;
 
             const char* s = msg.c_str();
             ok = send(ConSock, s, 1024, NULL);
-
         }
     }
 }
 
-
 void board()
 {
-	cout << "\n\n\tTic Tac Toe\n\n";
-
-	cout << "Player 1 (X)  -  Player 2 (O)" << endl << endl;
+	cout << "Welcome to Tic Tac Toe";
 	cout << endl;
-
 	cout << "     |     |     " << endl;
 	cout << "  " << square[1] << "  |  " << square[2] << "  |  " << square[3] << endl;
-
 	cout << "_____|_____|_____" << endl;
 	cout << "     |     |     " << endl;
-
 	cout << "  " << square[4] << "  |  " << square[5] << "  |  " << square[6] << endl;
-
 	cout << "_____|_____|_____" << endl;
 	cout << "     |     |     " << endl;
-
 	cout << "  " << square[7] << "  |  " << square[8] << "  |  " << square[9] << endl;
-
 	cout << "     |     |     " << endl << endl;
 }
