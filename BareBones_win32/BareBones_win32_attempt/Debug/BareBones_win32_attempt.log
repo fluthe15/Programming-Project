@@ -1,4 +1,5 @@
 ﻿  main.cpp
+<<<<<<< HEAD
 c:\program files (x86)\windows kits\10\include\10.0.17763.0\shared\ws2def.h(103): warning C4005: 'AF_IPX': macro redefinition
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\um\winsock.h(457): note: see previous definition of 'AF_IPX'
 c:\program files (x86)\windows kits\10\include\10.0.17763.0\shared\ws2def.h(147): warning C4005: 'AF_MAX': macro redefinition
@@ -190,3 +191,8 @@ d:\github\gitkraken\repositories\programming-project\barebones_win32\barebones_w
   d:\github\gitkraken\repositories\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(356): note: There is no context in which this conversion is possible
 d:\github\gitkraken\repositories\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(361): error C2440: 'initializing': cannot convert from 'int (__stdcall *)(SOCKET,char *,int,int)' to 'int'
   d:\github\gitkraken\repositories\programming-project\barebones_win32\barebones_win32_attempt\main.cpp(361): note: There is no context in which this conversion is possible
+=======
+c:\users\razvan danezu\desktop\12.7 miniproject backup\barebones_win32_attempt\main.cpp(199): warning C4715: 'WinProcedure2': not all control paths return a value
+c:\users\razvan danezu\desktop\12.7 miniproject backup\barebones_win32_attempt\main.cpp(181): warning C4715: 'WinProcedure': not all control paths return a value
+  BareBones_win32_attempt.vcxproj -> C:\Users\Razvan Danezu\Desktop\12.7 Miniproject Backup\Debug\BareBones_win32_attempt.exe
+>>>>>>> newDev-branch
