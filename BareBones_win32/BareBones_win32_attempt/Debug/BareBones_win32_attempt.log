@@ -1,4 +1,0 @@
-﻿  main.cpp
-c:\users\razvan danezu\desktop\12.7 miniproject backup\barebones_win32_attempt\main.cpp(199): warning C4715: 'WinProcedure2': not all control paths return a value
-c:\users\razvan danezu\desktop\12.7 miniproject backup\barebones_win32_attempt\main.cpp(181): warning C4715: 'WinProcedure': not all control paths return a value
-  BareBones_win32_attempt.vcxproj -> C:\Users\Razvan Danezu\Desktop\12.7 Miniproject Backup\Debug\BareBones_win32_attempt.exe
