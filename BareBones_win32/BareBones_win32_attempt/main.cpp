@@ -11,7 +11,6 @@
 //#include <ws2ipdef.h>
 //#pragma comment(lib, "ws2_32.lib")
 
-
 			using namespace std;
 
 			string IPADD;
@@ -22,10 +21,11 @@
 			char textSaved2[20];
 			char textSaved3[20];
 
+			// Char array to store content of buttons
+			char XO1[3]; char XO2[3]; char XO3[3]; char XO4[3]; char XO5[3]; char XO6[3]; char XO7[3]; char XO8[3]; char XO9[3];
+
 			// variables to control size and placement of the window
 			int winWidth, winHeight, winPosX, winPosY, monWidth, monHeight;
-
-
 
 			// this method is used by the WndProc (window procedure) that handles messages
 			LRESULT CALLBACK WinProcedure(HWND, UINT, WPARAM, LPARAM);
@@ -41,16 +41,27 @@
 			constexpr auto SETTINGS_OPTION_RESIZE = 3;
 			constexpr auto CONNECTION_VIEW = 4;
 			constexpr auto CONNECT_TO_SERVER = 5;
+			constexpr auto BTNXO_1 = 6;
+			constexpr auto BTNXO_2 = 7;
+			constexpr auto BTNXO_3 = 8;
+			constexpr auto BTNXO_4 = 9;
+			constexpr auto BTNXO_5 = 10;
+			constexpr auto BTNXO_6 = 11;
+			constexpr auto BTNXO_7 = 12;
+			constexpr auto BTNXO_8 = 13;
+			constexpr auto BTNXO_9 = 14;
 
 			// here we declare a method for the content of the window
 			void AddControls(HWND);
 			void AddConnect(HWND);
+
 			// the edit style needs a handler so we can get and manipulate user input
 			HWND hEdit;							// we declare the edit handler
 			HWND hEdit1;							// we declare the edit handler
 			HWND hEdit2;
 			HWND hEdit3;
 			HWND hWnd;
+			HWND hBtn1; HWND hBtn2; HWND hBtn3; HWND hBtn4; HWND hBtn5; HWND hBtn6; HWND hBtn7; HWND hBtn8; HWND hBtn9;
 
 			void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
 
@@ -60,7 +71,6 @@
 			// ncmdshow = tells us how to display the window
 			int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow)
 			{
-
 				// we need to define a window class to create a window!
 				WNDCLASSW wc = { 0 };
 				// then we need to fill out this struct with data:
@@ -111,7 +121,7 @@
 				// and then we move on to creating a window:
 				HWND hMainWindow = CreateWindowW(
 					L"MyWindowClass",					// create it from the class we created
-					L"WindowName",						// the name that will be displayed on the window
+					L"Tic Chat Toe",						// the name that will be displayed on the window
 					WS_OVERLAPPEDWINDOW | WS_VISIBLE, 	// this is the style of the window via a constant
 					winPosX,								// position of window (X)
 					winPosY,								// position of window (Y)
@@ -145,6 +155,7 @@
 				switch (msg)
 				{
 					// this is called every time a menu line item or button has been clicked
+				
 				case WM_COMMAND:
 					// here we use wp(WPARAM) to identify what was clicked
 					switch (wp)
@@ -153,7 +164,133 @@
 
 					case GAME_OPTION_START:
 						MessageBeep(MB_OK);		// make a little beep
-						PopUp(hMainWindow, L"404 Game not found!", L"Warning");			// a popup to replace content....
+						PopUp(hMainWindow, L"404 Game not found!", L"Click");			// a popup to replace content....
+						break;
+					
+					case BTNXO_1:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn1, XO1, 3);
+						if (strcmp(XO1, "X") == 1) {
+							SetWindowText(hBtn1, (LPCSTR) "X");
+						}
+						else if (strcmp(XO1, "X") == 0) {
+							SetWindowText(hBtn1, (LPCSTR) "O");
+						}
+						else if (strcmp(XO1, "O") == 0) {
+							SetWindowText(hBtn1, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_2:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn2, XO2, 3);
+						if (strcmp(XO2, "X") == 1) {
+							SetWindowText(hBtn2, (LPCSTR) "X");
+						}
+						else if (strcmp(XO2, "X") == 0) {
+							SetWindowText(hBtn2, (LPCSTR) "O");
+						}
+						else if (strcmp(XO2, "O") == 0) {
+							SetWindowText(hBtn2, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_3:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn3, XO3, 3);
+						if (strcmp(XO3, "X") == 1) {
+							SetWindowText(hBtn3, (LPCSTR) "X");
+						}
+						else if (strcmp(XO3, "X") == 0) {
+							SetWindowText(hBtn3, (LPCSTR) "O");
+						}
+						else if (strcmp(XO3, "O") == 0) {
+							SetWindowText(hBtn3, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_4:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn4, XO4, 3);
+						if (strcmp(XO4, "X") == 1) {
+							SetWindowText(hBtn4, (LPCSTR) "X");
+						}
+						else if (strcmp(XO4, "X") == 0) {
+							SetWindowText(hBtn4, (LPCSTR) "O");
+						}
+						else if (strcmp(XO4, "O") == 0) {
+							SetWindowText(hBtn4, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_5:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn5, XO5, 3);
+						if (strcmp(XO5, "X") == 1) {
+							SetWindowText(hBtn5, (LPCSTR) "X");
+						}
+						else if (strcmp(XO5, "X") == 0) {
+							SetWindowText(hBtn5, (LPCSTR) "O");
+						}
+						else if (strcmp(XO5, "O") == 0) {
+							SetWindowText(hBtn5, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_6:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn6, XO6, 3);
+						if (strcmp(XO6, "X") == 1) {
+							SetWindowText(hBtn6, (LPCSTR) "X");
+						}
+						else if (strcmp(XO6, "X") == 0) {
+							SetWindowText(hBtn6, (LPCSTR) "O");
+						}
+						else if (strcmp(XO6, "O") == 0) {
+							SetWindowText(hBtn6, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_7:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn7, XO7, 3);
+						if (strcmp(XO7, "X") == 1) {
+							SetWindowText(hBtn7, (LPCSTR) "X");
+						}
+						else if (strcmp(XO7, "X") == 0) {
+							SetWindowText(hBtn7, (LPCSTR) "O");
+						}
+						else if (strcmp(XO7, "O") == 0) {
+							SetWindowText(hBtn7, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_8:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn8, XO8, 3);
+						if (strcmp(XO8, "X") == 1) {
+							SetWindowText(hBtn8, (LPCSTR) "X");
+						}
+						else if (strcmp(XO8, "X") == 0) {
+							SetWindowText(hBtn8, (LPCSTR) "O");
+						}
+						else if (strcmp(XO8, "O") == 0) {
+							SetWindowText(hBtn8, (LPCSTR) "X");
+						}
+						break;
+
+					case BTNXO_9:
+						MessageBeep(MB_OK);		// make a little beep
+						GetWindowText(hBtn9, XO9, 3); // Get window text from handle and assign it to char array XO
+						if (strcmp(XO9, "X") == 1) { // If window text is not X, run if statement
+							SetWindowText(hBtn9, (LPCSTR) "X"); // Set window text to X
+						}
+						else if (strcmp(XO9, "X") == 0){ // Else if window text is X run if statement
+							SetWindowText(hBtn9, (LPCSTR) "O"); // Set window text to 0
+						}
+						else if (strcmp(XO9, "O") == 0) { // Else if window text is O run if statement
+							SetWindowText(hBtn9, (LPCSTR) "X"); // Set window text to X
+						}
 						break;
 
 					case GAME_OPTION_CLOSE:
@@ -185,9 +322,6 @@
 
 						break;
 						// we now created a window, but it will not show without a loop that shows it!
-
-
-
 					}
 					break;
 					// the message we expect here is create (called when the window is first created)
@@ -269,7 +403,7 @@
 			}
 
 			// this is the method that adds content in the window (they are called controls)
-
+#pragma region
 			void AddControls(HWND hWnd)
 			{
 
@@ -284,101 +418,101 @@
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn1 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					10, 110, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU) BTNXO_1,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn2 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					110, 110, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_2,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn3 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					210, 110, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_3,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn4 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					10, 210, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_4,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn5 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					110, 210, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_5,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn6 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					210, 210, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_6,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn7 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					10, 310, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_7,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn8 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					110, 310, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_8,
 					NULL,
 					NULL
 				);
 
-				CreateWindowW(
+				hBtn9 = CreateWindowW(
 					L"Button",
 					L"X/O",
 					WS_VISIBLE | WS_CHILD,
 					210, 310, 100, 100,
 					hWnd,
-					NULL,
+					(HMENU)BTNXO_9,
 					NULL,
 					NULL
 				);
@@ -518,6 +652,8 @@
 				);
 
 			}
+#pragma endregion AddControls
+
 			// this is the method that makes a popup!
 			void PopUp(HWND hWnd, LPCWSTR _text, LPCWSTR _name)
 			{
@@ -526,167 +662,3 @@
 				// we create a message-box as a test, MB_OK is the template, 
 				MessageBoxW(hWnd, text, name, MB_OK);
 			}
-
-
-
-			
-			//void Connect_To_Server(string IPADD, int PORT)
-			//{
-			//	string ipAddress = IPADD;			// IP Address of the server
-			//	int port = PORT;						// Listening port # on the server
-
-			//	// Initialize WinSock
-			//	WSAData data;
-			//	WORD ver = MAKEWORD(2, 2);
-			//	int wsResult = WSAStartup(ver, &data);
-			//	if (wsResult != 0)
-			//	{
-			//		cerr << "Can't start Winsock, Err #" << wsResult << endl;
-			//		return;
-			//	}
-
-			//	// Create socket
-			//	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-			//	if (sock == INVALID_SOCKET)
-			//	{
-			//		cerr << "Can't create socket, Err #" << WSAGetLastError() << endl;
-			//		WSACleanup();
-			//		return;
-			//	}
-
-			//	// Fill in a hint structure
-			//	sockaddr_in hint;
-			//	hint.sin_family = AF_INET;
-			//	hint.sin_port = htons(port);
-			//	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
-
-			//	// Connect to server
-			//	int connResult = connect(sock, (sockaddr*)&hint, sizeof(hint));
-			//	if (connResult == SOCKET_ERROR)
-			//	{
-			//		cerr << "Can't connect to server, Err #" << WSAGetLastError() << endl;
-			//		closesocket(sock);
-			//		WSACleanup();
-			//		return;
-			//	}
-
-			//	//here and up is connection to server
-
-			//		// Do-while loop to send and receive data
-			//	char buf[4096];
-			//	string userInput;
-
-			//	do
-			//	{
-			//		// Prompt the user for some text
-			//		cout << "> ";
-			//		getline(cin, userInput);
-
-			//		if (userInput.size() >= 0)		// Make sure the user has typed in something
-			//		{
-			//			// Send the text
-			//			int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-			//			if (sendResult != SOCKET_ERROR)
-			//			{
-			//				// Wait for response
-			//				ZeroMemory(buf, 4096);
-			//				int bytesReceived = recv(sock, buf, 4096, 0);
-			//				if (bytesReceived > 0)
-			//				{
-			//					// Echo response to console
-			//					cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-			//				}
-			//			}
-			//		}
-
-			//	} while (userInput.size() > 0);
-
-			//	// Gracefully close down everything
-			//	closesocket(sock);
-			//	WSACleanup();
-
-			//}
-			
-			 
-
-			/*
-
-				//here and up is connection to server
-
-			// Do-while loop to send and receive data
-			char buf[4096];
-			string userInput;
-
-			do
-			{
-				// Prompt the user for some text
-				cout << "> ";
-				getline(cin, userInput);
-
-				if (userInput.size() >= 0)		// Make sure the user has typed in something
-				{
-					// Send the text
-					int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-					if (sendResult != SOCKET_ERROR)
-					{
-						// Wait for response
-						ZeroMemory(buf, 4096);
-						int bytesReceived = recv(sock, buf, 4096, 0);
-						if (bytesReceived > 0)
-						{
-							// Echo response to console
-							cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-						}
-					}
-				}
-
-			} while (userInput.size() > 0);
-
-			// Gracefully close down everything
-			closesocket(sock);
-			WSACleanup();
-			}
-
-			*/
-
-
-			/*
-			void Client()
-			{
-
-				//here and up is connection to server
-
-				// Do-while loop to send and receive data
-				char buf[4096];
-				string userInput;
-
-				do
-				{
-					// Prompt the user for some text
-					cout << "> ";
-					getline(cin, userInput);
-
-					if (userInput.size() > 0)		// Make sure the user has typed in something
-					{
-						// Send the text
-						int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-						if (sendResult != SOCKET_ERROR)
-						{
-							// Wait for response
-							ZeroMemory(buf, 4096);
-							int bytesReceived = recv(sock, buf, 4096, 0);
-							if (bytesReceived > 0)
-							{
-								// Echo response to console
-								cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-							}
-						}
-					}
-
-				} while (userInput.size() > 0);
-
-				// Gracefully close down everything
-				closesocket(sock);
-				WSACleanup();
-			}
-			*/
