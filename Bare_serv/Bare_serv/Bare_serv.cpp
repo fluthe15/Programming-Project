@@ -21,6 +21,10 @@ int main()
 		cerr << "winsock could not be initialized!" << endl;
 		return 1; // if we cant initialize winsock, throw error!
 	}
+	else if (wsOK == 0)
+	{
+		cerr << "winsock initialized!" << endl;
+	}
 
 
 	// next we create a socket to bind to
@@ -29,6 +33,10 @@ int main()
 	{
 		cerr << "cannot create socket!" << endl;
 		return 1; // if we cannot create a socket for listening, throw error!
+	}
+	else if (listening != INVALID_SOCKET)
+	{
+		cerr << "Socket created!" << endl;
 	}
 
 	// bind socket to an IP and a port
@@ -62,6 +70,9 @@ int main()
 
 				//Add the new connection to the list of connected clients
 				FD_SET(client, &master);
+
+				//Message to self that connection is established
+				cerr << "Connection with client established!" << endl;
 
 				//Send a welcome message to the connected client
 				string welcomeMsg = "Welcome to the Awesome Chat Server!\r\n";
