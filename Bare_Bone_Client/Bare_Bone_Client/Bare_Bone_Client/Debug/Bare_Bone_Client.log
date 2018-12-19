@@ -1,0 +1,4 @@
+﻿  pch.cpp
+  Bare_Bone_Client.cpp
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_bone_client\bare_bone_client\bare_bone_client.cpp(8): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Bare_Bone_Client.vcxproj -> C:\Users\nicol\Documents\Gitkraken\Programming_Mini_Project\Programming-Project\Bare_Bone_Client\Debug\Bare_Bone_Client.exe
