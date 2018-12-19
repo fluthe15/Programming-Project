@@ -42,6 +42,16 @@
 			constexpr auto CONNECTION_VIEW = 4;
 			constexpr auto CONNECT_TO_SERVER = 5;
 			constexpr auto SEND_BUTTON = 6;
+			constexpr auto BTNXO_1 = 7;
+			constexpr auto BTNXO_2 = 8;
+			constexpr auto BTNXO_3 = 9;
+			constexpr auto BTNXO_4 = 10;
+			constexpr auto BTNXO_5 = 11;
+			constexpr auto BTNXO_6 = 12;
+			constexpr auto BTNXO_7 = 13;
+			constexpr auto BTNXO_8 = 14;
+			constexpr auto BTNXO_9 = 15;
+
 
 			// here we declare a method for the content of the window
 			void AddControls(HWND);
@@ -56,6 +66,7 @@
 			HWND chatInput;
 			HWND chatOutput;
 			HWND userName;
+			HWND hBtn1; HWND hBtn2; HWND hBtn3; HWND hBtn4; HWND hBtn5; HWND hBtn6; HWND hBtn7; HWND hBtn8; HWND hBtn9;
 
 			void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
 
