@@ -41,15 +41,7 @@
 			constexpr auto SETTINGS_OPTION_RESIZE = 3;
 			constexpr auto CONNECTION_VIEW = 4;
 			constexpr auto CONNECT_TO_SERVER = 5;
-			constexpr auto BTNXO_1 = 6;
-			constexpr auto BTNXO_2 = 7;
-			constexpr auto BTNXO_3 = 8;
-			constexpr auto BTNXO_4 = 9;
-			constexpr auto BTNXO_5 = 10;
-			constexpr auto BTNXO_6 = 11;
-			constexpr auto BTNXO_7 = 12;
-			constexpr auto BTNXO_8 = 13;
-			constexpr auto BTNXO_9 = 14;
+			constexpr auto SEND_BUTTON = 6;
 
 			// here we declare a method for the content of the window
 			void AddControls(HWND);
@@ -61,9 +53,21 @@
 			HWND hEdit2;
 			HWND hEdit3;
 			HWND hWnd;
-			HWND hBtn1; HWND hBtn2; HWND hBtn3; HWND hBtn4; HWND hBtn5; HWND hBtn6; HWND hBtn7; HWND hBtn8; HWND hBtn9;
+			HWND chatInput;
+			HWND chatOutput;
+			HWND userName;
 
 			void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
+
+			CHAR ipAddressString[] = { 0 };
+			
+			string strOutput;
+			string strOutput2;
+
+			char chatMSG[4096];
+			char charOut[4096];
+			char userNameVar[30];
+			
 
 			// the win32 kind of main().. it needs a reference for different things.
 			// hInst = instance of application, aka id of app
@@ -151,6 +155,8 @@
 
 			LRESULT CALLBACK WinProcedure(HWND hMainWindow, UINT msg, WPARAM wp, LPARAM lp)
 			{
+				Client cObject;
+
 				// switch case to see the value of msg
 				switch (msg)
 				{
@@ -306,22 +312,43 @@
 						MessageBox(hWnd, textSaved1, textSaved1, MB_OK);
 						break;
 
+					case SEND_BUTTON:
+						MessageBeep(MB_ABORTRETRYIGNORE);
+
+						GetWindowText(chatInput, chatMSG, 4096);
+						GetWindowText(userName, userNameVar, 30);
+						
+						strcat_s(userNameVar, ": ");
+						strcat_s(charOut, userNameVar);
+						strcat_s(charOut, chatMSG);
+						strcat_s(charOut, "\r\n");
+						
+						SetWindowText(chatOutput, charOut);
+						SetWindowText(chatInput, "");
+						break;
+
 					case CONNECTION_VIEW:                       // in here we make the window switch 
-						HWND hConnectWindow = CreateWindowW(
-							L"MyWindowClass2",					// create it from the class we created
-							L"TIC-CHAT-TOE",						// the name that will be displayed on the window
-							WS_OVERLAPPEDWINDOW | WS_VISIBLE, 	// this is the style of the window via a constant
-							winPosX,								// position of window (X)
-							winPosY,								// position of window (Y)
-							winWidth,								// size of window (X)
-							winHeight,								// size of window (Y)
-							NULL,								// parent of window, we have none so NULL
-							NULL,								// hMenu is also NULL, its not a menu...
-							NULL,								// the hInstance, we pass NULL because the instance is set above
-							NULL);								// lParams, we pass NULL (ignore it)
+						cObject.Connect_To_Server("127.0.0.1", 54000);
+						strcat_s(charOut, ">> Connected to server");
+						strcat_s(charOut, "\r\n");
+						SetWindowText(chatOutput, charOut);
+
+						//HWND hConnectWindow = CreateWindowW(
+						//	L"MyWindowClass2",					// create it from the class we created
+						//	L"TIC-CHAT-TOE",						// the name that will be displayed on the window
+						//	WS_OVERLAPPEDWINDOW | WS_VISIBLE, 	// this is the style of the window via a constant
+						//	winPosX,								// position of window (X)
+						//	winPosY,								// position of window (Y)
+						//	winWidth,								// size of window (X)
+						//	winHeight,								// size of window (Y)
+						//	NULL,								// parent of window, we have none so NULL
+						//	NULL,								// hMenu is also NULL, its not a menu...
+						//	NULL,								// the hInstance, we pass NULL because the instance is set above
+						//	NULL);								// lParams, we pass NULL (ignore it)
 
 						break;
 						// we now created a window, but it will not show without a loop that shows it!
+
 					}
 					break;
 					// the message we expect here is create (called when the window is first created)
@@ -341,7 +368,6 @@
 
 			LRESULT CALLBACK WinProcedure2(HWND hConnectWindow, UINT msg, WPARAM wp, LPARAM lp)
 			{
-				Client cObject;
 
 				switch (msg)
 				{
@@ -349,9 +375,6 @@
 					switch (wp)
 					{
 					case CONNECTION_VIEW:
-						MessageBeep(MB_OK);
-						PopUp(hConnectWindow, L"Connecting...", L"Establishing connection");
-						cObject.Connect_To_Server("127.0.0.1", 54000);
 						break;
 
 					default:
@@ -528,10 +551,10 @@
 					NULL
 				);
 
-				CreateWindowW(
-					L"Edit",
-					L"Room chat",
-					WS_VISIBLE | WS_CHILD,
+				chatOutput = CreateWindowW(
+					L"Static",
+					(LPCWSTR)charOut,
+					WS_VISIBLE | WS_CHILD | SS_EDITCONTROL | WS_BORDER,
 					410, 100, 300, 250,
 					hWnd,
 					NULL,
@@ -540,8 +563,30 @@
 				);
 
 				CreateWindowW(
+					L"Static",
+					L"Username",
+					WS_VISIBLE | WS_CHILD,
+					10, 20, 300, 20,
+					hWnd,
+					NULL,
+					NULL,
+					NULL
+				);
+
+				userName = CreateWindowW(
 					L"Edit",
-					L"Response box",
+					L"Default user",
+					WS_VISIBLE | WS_CHILD,
+					10, 40, 300, 20,
+					hWnd,
+					NULL,
+					NULL,
+					NULL
+				);
+
+				chatInput = CreateWindowW(
+					L"Edit",
+					L"",
 					WS_VISIBLE | WS_CHILD,
 					410, 360, 300, 80,
 					hWnd,
@@ -556,7 +601,7 @@
 					WS_VISIBLE | WS_CHILD,
 					410, 450, 300, 30,
 					hWnd,
-					NULL,
+					(HMENU)SEND_BUTTON,
 					NULL,
 					NULL
 				);
@@ -585,7 +630,7 @@
 					NULL
 				);
 
-				HWND hEdit1 = CreateWindowW(
+				hEdit1 = CreateWindowW(
 					L"Edit",
 					L"Ip address ",
 					WS_VISIBLE | WS_CHILD,
