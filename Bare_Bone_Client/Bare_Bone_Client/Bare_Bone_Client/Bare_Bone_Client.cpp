@@ -52,24 +52,17 @@ void main()
 
 	do
 	{
+		ZeroMemory(buf, 4096);
+		int bytesReceived = recv(sock, buf, 4096, 0);
+		std::cout << std::string(buf, 0, bytesReceived) << std::endl;
+
 		std::cout << "> ";
 		getline(std::cin, userInput);
 
-		if (userInput.size() > 0)
-		{
-			int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-			if (sendResult != SOCKET_ERROR)
-			{
-				ZeroMemory(buf, 4096);
-				int bytesReceived = recv(sock, buf, 4096, 0);
-				if (bytesReceived > 0)
-				{
-					std::cout << "SERVER" << std::string(buf, 0, bytesReceived) << std::endl;
-				}
-			}
-		}
+		int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+		
 
-	} while (userInput.size() > 0);
+	} while (connResult != SOCKET_ERROR);
 
 	// Gracefully close down everything
 	closesocket(sock);
