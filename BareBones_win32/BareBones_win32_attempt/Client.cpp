@@ -13,6 +13,8 @@ Client::~Client()
 {
 }
 
+void sendMessage(std::string msg_, SOCKET sock_);
+
 void Client::Connect_To_Server(std::string IPADD, int PORT)
 			{
 				std::string ipAddress = IPADD;			// IP Address of the server
@@ -56,11 +58,12 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 				//here and up is connection to server
 
 					// Do-while loop to send and receive data
-				char buf[4096];
-				std::string userInput;
+				//char buf[4096];
+				//std::string userInput;
 
-				do
+				/* do
 				{
+					/*
 					// Prompt the user for some text
 					std::cout << "> ";
 					getline(std::cin, userInput);
@@ -69,6 +72,7 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 					{
 						// Send the text
 						int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
+						
 						if (sendResult != SOCKET_ERROR)
 						{
 							// Wait for response
@@ -81,11 +85,39 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 							}
 						}
 					}
-
+				
 				} while (userInput.size() > 0);
 
 				// Gracefully close down everything
 				closesocket(sock);
 				WSACleanup();
+				*/
 
 			}
+
+void sendMessage(std::string msg_, SOCKET sock_) 
+{
+	int sendResult = send(sock_, msg_.c_str(), msg_.size() + 1, 0);
+}
+
+std::string recvMessage(char buf_[4096], SOCKET sock_) 
+{
+	bool receiving = true;
+	while (receiving) 
+	{
+		// Wait for response
+		ZeroMemory(buf_, 4096);
+		int bytesReceived = recv(sock_, buf_, 4096, 0);
+		// if we received something, stop listening..
+		if (bytesReceived > 0) { receiving = false; }
+	}
+	// convert msg received to string, and return it..
+	std::string returnString = buf_;
+	return returnString;
+}
+
+void graceDisconnect(SOCKET sock_) 
+{
+	closesocket(sock_);
+	WSACleanup();
+}

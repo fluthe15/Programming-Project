@@ -1,3 +1,4 @@
 ﻿  Bare_serv.cpp
-c:\users\nicol\documents\gitkraken\mini_project\bare_serv\bare_serv\bare_serv.cpp(100): warning C4018: '<': signed/unsigned mismatch
-  Bare_serv.vcxproj -> C:\Users\nicol\Documents\GitKraken\Mini_Project\Bare_serv\Debug\Bare_serv.exe
+c:\users\olive\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(119): warning C4018: '<': signed/unsigned mismatch
+  LINK : C:\Users\Olive\Documents\GitHub\Programming-Project\Bare_serv\Debug\Bare_serv.exe not found or not built by the last incremental link; performing full link
+  Bare_serv.vcxproj -> C:\Users\Olive\Documents\GitHub\Programming-Project\Bare_serv\Debug\Bare_serv.exe

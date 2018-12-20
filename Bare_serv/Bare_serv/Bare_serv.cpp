@@ -141,7 +141,7 @@ int main()
 	
 	return 0;
 }
-
+/*
 boolean checkPlacement(string Tile_) 
 {
 	// check if tile is available, or occupied
@@ -166,3 +166,4 @@ void switchTurn()
 	// bool != bool
 	// possibly send msg to users... / sendChat("not your turn");
 }
+*/
