@@ -1,4 +1,4 @@
 ﻿  Bare_serv.cpp
-h:\programming_project_p3\programming-project\bare_serv\bare_serv\bare_serv.cpp(150): warning C4018: '<': signed/unsigned mismatch
-  LINK : H:\Programming_Project_P3\Programming-Project\Bare_serv\Debug\Bare_serv.exe not found or not built by the last incremental link; performing full link
+h:\programming_project_p3\programming-project\bare_serv\bare_serv\bare_serv.cpp(266): warning C4018: '<': signed/unsigned mismatch
+h:\programming_project_p3\programming-project\bare_serv\bare_serv\bare_serv.cpp(291): warning C4552: '!=': result of expression not used
   Bare_serv.vcxproj -> H:\Programming_Project_P3\Programming-Project\Bare_serv\Debug\Bare_serv.exe

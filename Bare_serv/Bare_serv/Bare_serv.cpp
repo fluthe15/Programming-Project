@@ -5,11 +5,16 @@
 #include <iostream>
 #include <WS2tcpip.h>
 #include <sstream>
+#include <ctype.h>
 
 
 #pragma comment (lib, "ws2_32.lib")
 
+// some of the methods we are gonna use
 void resetValues();
+void switchTurn();
+void closeClean();
+boolean checkForWin();
 
 // here is our buffer, it contains all the data we send back and forth, consider it the stream of information
 char buf[4096];
@@ -26,7 +31,8 @@ struct Tile
 
 } tiles[9]; // an array of the tiles
 
-
+// this boolean controls which players' turn it is
+boolean turn;
 
 int main()
 {
@@ -58,6 +64,8 @@ int main()
 		return 1; // if we cannot create a socket for listening, throw error!
 	}
 
+
+
 	// bind socket to an IP and a port
 	sockaddr_in hint;
 	hint.sin_family = AF_INET;
@@ -65,8 +73,12 @@ int main()
 	hint.sin_addr.S_un.S_addr = INADDR_ANY;														// give us any address plz..
 	bind(listening, (sockaddr*)&hint, sizeof(hint));											// notice the casting as pointer of hint addr!
 
+
+
 	// assign the socket for listening
 	listen(listening, SOMAXCONN);																// we want listening to be a listening socket!
+
+
 
 	// now we need to define our set of sockets so we can accept connections
 	// from multiple clients in a 'master set'
@@ -75,6 +87,9 @@ int main()
 	FD_ZERO(&master);
 	// now we add the listener to the master set with FD_SET
 	FD_SET(listening, &master);
+
+
+
 
 
 	// at this point we create our infinite loop
@@ -90,6 +105,8 @@ int main()
 		// select does many things, what we want to do is read, so thats the one we use
 		// and the rest gets a null pointer.. NOTE: we use copy since thats our sacrificial set
 		int socketCount = select(0, &copyOfMaster, nullptr, nullptr, nullptr);
+		
+		
 		// now we have our sockets inside copy, and we need a way to iterate on them, so for-loop!
 		for (int i = 0; i < socketCount; i++)
 		{
@@ -118,7 +135,8 @@ int main()
 				// we do that with rev, and we save it as bytes! we get it from sock..
 				// (which remember, is only a socket *not* for listening now)
 				ZeroMemory(buf, 4096);
-				int bytesReceived = recv(sock, buf, 4096, 0);
+				int bytesReceived = 0;
+				bytesReceived = recv(sock, buf, 4096, 0);
 
 				// now we want to know if there was something in this message
 				if (bytesReceived <= 0)
@@ -134,11 +152,110 @@ int main()
 					// and otherwise change things based on the message we received
 
 
+					// first let's save it to a string we can compare to
+					//std::string stringBuf = buf;
+					// ^this works, but lets try the fancy new ss!^
+					std::ostringstream ss;
+						ss << buf;
+						std::string stringBuf = ss.str();
+						
+					// now to see if the message was a request for a tile
+					// by seeing if we get a digit as the first part of the string
+					// (a little unsafe if we get chat working, OBS)
+					if(isdigit(stringBuf.at(0)))
+					{
+						// we create a switchint of the string (the string as an int)
+					// and also a controlInt, to save which tile the client wanted..
+						int switchInt = std::stoi(stringBuf);
+						int controlInt = 0;
 
+						// then we do a switch case to set the controlInt correctly, based on the string..
+						switch (switchInt)
+						{
+						case 1:
+							controlInt = 1;
+							break;
+						case 2:
+							controlInt = 2;
+							break;
+						case 3:
+							controlInt = 3;
+							break;
+						case 4:
+							controlInt = 4;
+							break;
+						case 5:
+							controlInt = 5;
+							break;
+						case 6:
+							controlInt = 6;
+							break;
+						case 7:
+							controlInt = 7;
+							break;
+						case 8:
+							controlInt = 8;
+							break;
+						case 9:
+							controlInt = 9;
+							break;
+						default:
+							controlInt = 0;
+							break;
+						}
+						// we set the controlInt according to what the string was as an int..
+						// so if controlInt is larger than 0, we know it was a tile they asked for, right?
+						if (controlInt > 0)
+						{
+							// now we can set the proper values of our tiles, based on which
+							// client asked for the tile (-1, because 0 is reserved for testing against)
+
+							// is it player 1? (first to connect)
+							if (sock == master.fd_array[2])
+							{
+								// if the tile is vacant
+								if (tiles[controlInt - 1].state = false)
+								{
+									// claim ownership
+									tiles[controlInt - 1].owner = "P1";
+									// occupy tile
+									tiles[controlInt - 1].state = true;
+									// give over turn
+									switchTurn();
+								}
+								// if the tile is occupied
+								else if (tiles[controlInt - 1].state = true)
+								{
+
+								}
+							}
+							// or is it player 2? (second to connect)
+							else if (sock == master.fd_array[3])
+							{
+								// if the tile is vacant
+								if (tiles[controlInt - 1].state = false)
+								{
+									// claim ownership
+									tiles[controlInt - 1].owner = "P2";
+									// occupy tile
+									tiles[controlInt - 1].state = true;
+									// give over turn
+									switchTurn();
+								}
+								// if the tile is occupied
+								else if (tiles[controlInt - 1].state = true)
+								{
+
+								}
+							}
+
+						}
+					}
+					
 					// as an example, we can assemble a string with a PREFIX and then the BUFFER
 					// using stringstream assembly magic made from bunnyfarts and vomit
-					std::ostringstream ss;
-					ss << "A USER SAYS" << ": " << buf << "\r\n";
+					ss.str("");
+					ss << "A USER SAYS" << ": " << buf << "\r\n" << "SERVER SAYS" << ": " << stringBuf << "\r\n";
 					// we save the stringstream in an actual closed string
 					// so we can send that one out instead of just buf alone
 					std::string outboundString = ss.str();
@@ -162,19 +279,28 @@ int main()
 				}
 			}
 
-			// so now that we have set up the sockets for the correct usages
-			// we can begin to actually send and receive some things through them
-
 		}
 
 	}
-	// close the socket when we are done with it
-	//closesocket(clientSocket);
-
-	// shutdown/cleanup winsock
-	WSACleanup();
-
 	return 0;
+}
+
+void switchTurn() 
+{
+	// give the turn over, in effect just switch a boolean
+	// true is player 1, false is player 2
+	turn != turn;
+	if (checkForWin()) 
+	{
+		// SOMEBODY WON!!!!
+	}
+	
+}
+
+boolean checkForWin() 
+{
+	// check for a win condition here!!!!!!
+	return false;
 }
 
 void resetValues()
@@ -186,7 +312,14 @@ void resetValues()
 		tiles[i].state = false;
 		tiles[i].owner = "none";
 	}
+	
+	// set turn to player 1
+	turn = true;
+}
 
+void closeClean() 
+{
+	WSACleanup();
 }
 
 /*  // LEGACY
