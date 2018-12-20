@@ -9,6 +9,16 @@
 
 using namespace std;
 
+boolean checkPlacement(string Tile_);
+void sendChat(string msg_);
+int checkForWin();
+void switchTurn();
+
+
+
+
+
+
 int main()
 {
 	// first we initialize winsock
@@ -93,6 +103,15 @@ int main()
 					FD_CLR(sock, &master);
 				}
 
+				// switch(bytesIn)
+				// case "P1,A1":
+				// player one asks for a1, so run checkPlacement(Tile)
+				// etc..
+				// case "P1,text: ....":
+				// its a chat message, push it to other client, so run sendChat(Msg)
+				// etc...
+
+
 				else
 				{
 					//Send message to other clients, and not the listening socket
@@ -123,64 +142,27 @@ int main()
 	return 0;
 }
 
-
-
-// wait for a connection
-/*sockaddr_in client;
-int clientsize = sizeof(client);
-
-SOCKET clientSocket = accept(listening, (sockaddr*)&client, &clientsize);
-if (clientSocket == INVALID_SOCKET)
+boolean checkPlacement(string Tile_) 
 {
-	cerr << "invalid socket!" << endl;
+	// check if tile is available, or occupied
+	// allow placement
+	// run switchTurn()
 }
 
-char host[NI_MAXHOST];																		// client name
-char service[NI_MAXSERV];																	// port client is connected on
-
-// zero out the memory
-//memset(host, 0, NI_MAXHOST);
-//memset(service, 0, NI_MAXSERV);
-ZeroMemory(host, NI_MAXHOST);
-ZeroMemory(service, NI_MAXSERV);
-if (getnameinfo((sockaddr*)&client, sizeof(client), host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+void sendChat(string msg_) 
 {
-	cout << host << " connected on port " << service << endl;
-}
-else																						// try and get a name, otherwise just use the ip
-{
-	inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);
-	cout << host << " connected on port " << ntohs(client.sin_port) << endl;
+	// send msg to both clients, include username??
 }
 
-// close listening socket
-closesocket(listening);
-char buf[4096];
-
-while (true)
+int checkForWin() 
 {
-	ZeroMemory(buf, 4096);																	// zero out our buffer
-	//memset(buf, 0, 4096);
-	// wait for data from client
-	int bytesReceived = recv(clientSocket, buf, 4096, 0);
-	if (bytesReceived == SOCKET_ERROR)
-	{
-		cerr << "error when receving!" << endl;
-		break;
-	}
-
-	if (bytesReceived == 0)
-	{
-		//cout << "client disconnected, received 0" << endl;
-		break;
-	}
-
-	// echo message back to client
-	cout << buf
-		send(clientSocket, buf, bytesReceived + 1, 0);
+	// if 0, player one won, if 1 player 2 won
+	// send "victory" or "defeat" based on return statement..
+	// if all tiles occupied and no win, restart game....
 }
-// NOTE: This is meant for a RAW CONNECTION!
 
-// close the socket when we are done with it
-//closesocket(clientSocket);
-// shutdown/cleanup winsock */
+void switchTurn() 
+{
+	// bool != bool
+	// possibly send msg to users... / sendChat("not your turn");
+}
