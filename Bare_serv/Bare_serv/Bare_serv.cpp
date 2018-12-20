@@ -14,11 +14,6 @@ void sendChat(string msg_);
 int checkForWin();
 void switchTurn();
 
-
-
-
-
-
 int main()
 {
 	// first we initialize winsock
@@ -101,7 +96,55 @@ int main()
 					//Drop the client
 					closesocket(sock);
 					FD_CLR(sock, &master);
+
+					string bufToString = buf;
+					string first_two = bufToString.substr(0, 2);
+					string first_four = bufToString.substr(0, 4);
+
+					if (first_two == "A1")
+					{
+
+					}
+					else if (first_two == "A2")
+					{
+
+					}
+					else if (first_two == "A3")
+					{
+
+					}
+					else if (first_two == "B1")
+					{
+
+					}
+					else if (first_two == "B2")
+					{
+
+					}
+					else if (first_two == "B3")
+					{
+
+					}
+					else if (first_two == "C1")
+					{
+
+					}
+					else if (first_two == "C2")
+					{
+
+					}
+					else if (first_two == "C3")
+					{
+
+					}
+
+					if (first_four == "TEXT")
+					{
+
+					}
 				}
+
+				
 
 				// switch(bytesIn)
 				// case "P1,A1":
@@ -141,7 +184,7 @@ int main()
 	
 	return 0;
 }
-/*
+
 boolean checkPlacement(string Tile_) 
 {
 	// check if tile is available, or occupied
@@ -166,4 +209,3 @@ void switchTurn()
 	// bool != bool
 	// possibly send msg to users... / sendChat("not your turn");
 }
-*/
