@@ -185,17 +185,7 @@
 						break;
 					
 					case BTNXO_1:
-						MessageBeep(MB_OK);		// make a little beep
-						GetWindowText(hBtn1, XO1, 3);
-						if (strcmp(XO1, "X") == 1) {
-							SetWindowText(hBtn1, (LPCSTR) "X");
-						}
-						else if (strcmp(XO1, "X") == 0) {
-							SetWindowText(hBtn1, (LPCSTR) "O");
-						}
-						else if (strcmp(XO1, "O") == 0) {
-							SetWindowText(hBtn1, (LPCSTR) "X");
-						}
+
 						break;
 
 					case BTNXO_2:
