@@ -9,11 +9,14 @@
 
 using namespace std;
 
-boolean checkPlacement(string Tile_);
+void checkPlacement(int input_, SOCKET sock);
 void sendChat(string msg_);
 int checkForWin();
 void switchTurn();
-
+boolean turn = false;
+// a boolean for each tile..
+boolean A1, A2, A3, B1, B2, B3, C1, C2, C3 = false;
+fd_set master;
 int main()
 {
 	// first we initialize winsock
@@ -54,10 +57,12 @@ int main()
 	// assign the socket for listening
 	listen(listening, SOMAXCONN);																// we want listening to be a listening socket!
 
-	fd_set master;
+	
 	FD_ZERO(&master);
 
 	FD_SET(listening, &master);
+
+	int input;
 
 	while (true)
 	{
@@ -77,11 +82,11 @@ int main()
 				FD_SET(client, &master);
 
 				//Message to self that connection is established
-				cerr << "Connection with client established!" << endl;
-
+				cout << "Connection with client established!" << endl;
+				
 				//Send a welcome message to the connected client
-				string welcomeMsg = "Welcome to the Awesome Chat Server!\r\n";
-				send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+				//string welcomeMsg = "Welcome to the Awesome Chat Server!\r\n";
+				//send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
 			}
 
 			else
@@ -97,67 +102,13 @@ int main()
 					closesocket(sock);
 					FD_CLR(sock, &master);
 
-					string bufToString = buf;
-					string first_two = bufToString.substr(0, 2);
-					string first_four = bufToString.substr(0, 4);
-
-					if (first_two == "A1")
-					{
-
-					}
-					else if (first_two == "A2")
-					{
-
-					}
-					else if (first_two == "A3")
-					{
-
-					}
-					else if (first_two == "B1")
-					{
-
-					}
-					else if (first_two == "B2")
-					{
-
-					}
-					else if (first_two == "B3")
-					{
-
-					}
-					else if (first_two == "C1")
-					{
-
-					}
-					else if (first_two == "C2")
-					{
-
-					}
-					else if (first_two == "C3")
-					{
-
-					}
-
-					if (first_four == "TEXT")
-					{
-
-					}
+					
 				}
-
-				
-
-				// switch(bytesIn)
-				// case "P1,A1":
-				// player one asks for a1, so run checkPlacement(Tile)
-				// etc..
-				// case "P1,text: ....":
-				// its a chat message, push it to other client, so run sendChat(Msg)
-				// etc...
-
-
 				else
 				{
-					//Send message to other clients, and not the listening socket
+					/*
+					
+					//Send message to other clients, and not the listening socket, IN CASE OF CHAT MESSAGE!!!!
 
 					for (int i = 0; i < master.fd_count; i++)
 					{
@@ -171,10 +122,27 @@ int main()
 							send(outSock, strOut.c_str(), strOut.size() + 1, 0);
 						}
 					}
+					*/
+
+					for (int i = 0; i <= master.fd_count; i++) 
+					{
+						SOCKET outSock = master.fd_array[i];
+						ostringstream ss;
+						//ss << "USERNAME" << sock << ": " << buf << "\r";
+						string strOut = ss.str();
+						// we expect only "A1"
+						input = 0;
+						if (strOut == "A1") 
+						{
+							cout << "we received an A1" << endl;
+							input = 1;
+						}
+						
+						//checkPlacement(input, outSock);
+						//send(outSock, strOut.c_str(), strOut.size() + 1, 0);
+					}
 				}
-
-				//Accept a new message
-
+				
 			}
 
 		}
@@ -185,27 +153,117 @@ int main()
 	return 0;
 }
 
-boolean checkPlacement(string Tile_) 
+
+void checkPlacement(int input_, SOCKET sock)
 {
-	// check if tile is available, or occupied
-	// allow placement
-	// run switchTurn()
+	char OK[] = "OK";
+	char NO[] = "NO";
+	char TURN[] = "NO TURN";
+
+
+	//check which client wants to place something
+	if (sock == master.fd_array[0]) 
+	{
+		// check if it is their turn
+		if (turn = false) 
+		{
+			// check if the tile is occupied
+			switch (input_) 
+			{
+			case 1:
+				if (A1 = false)
+				{
+					// no one is occupying this space, give OK
+					send(sock, OK, sizeof(OK), 0);
+					// set the tile to occupied
+					A1 = true;
+					// TODO: CALL CHECKFORWIN
+					//switch the turn
+					switchTurn();
+					break;
+				}
+				else if (A1 = true) 
+				{
+				// the tile was occupied, give NO
+					send(sock, NO, sizeof(NO), 0);
+					break;
+				}
+				break;
+			case 2:
+				if (A2 = false) 
+				{
+				
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else send(sock, TURN, sizeof(TURN), 0);
+	}
+	//check which client wants to place something
+	else if (sock == master.fd_array[1]) 
+	{
+		// check if it is their turn
+		if (turn = true) 
+		{
+			switch (input_)
+			{
+			case 1:
+				if (A1 = false)
+				{
+					// no one is occupying this space, give OK
+					send(sock, OK, sizeof(OK), 0);
+					// set the tile to occupied
+					A1 = true;
+					// TODO: CALL CHECKFORWIN
+					//switch the turn
+					switchTurn();
+					break;
+				}
+				else if (A1 = true)
+				{
+					// the tile was occupied, give NO
+					send(sock, NO, sizeof(NO), 0);
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		else send(sock, TURN, sizeof(TURN), 0);
+	}
 }
 
-void sendChat(string msg_) 
+void sendChat(string msg_)
 {
+	
+	
+	
 	// send msg to both clients, include username??
 }
 
-int checkForWin() 
+int checkForWin()
 {
+	int result = 3;
+	// if three X, return 0
+	// else if three 0, return 1
+	// else return 2, game reset!
+	return result;
 	// if 0, player one won, if 1 player 2 won
 	// send "victory" or "defeat" based on return statement..
 	// if all tiles occupied and no win, restart game....
 }
 
-void switchTurn() 
+void switchTurn()
 {
-	// bool != bool
-	// possibly send msg to users... / sendChat("not your turn");
+	// turn is now the opposite of turn..
+	turn != turn;
+}
+
+
+void resetVars() 
+{
+// reset all booleans, variables, drink, cupholders, levels, skillpoints etc....
 }

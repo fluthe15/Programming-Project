@@ -74,10 +74,12 @@
 			
 			string strOutput;
 			string strOutput2;
-
+			string tempString;
+			string A1Buf;
 			char chatMSG[4096];
 			char charOut[4096];
 			char userNameVar[30];
+			char tempChar[4096];
 			
 
 			// the win32 kind of main().. it needs a reference for different things.
@@ -185,7 +187,34 @@
 						break;
 					
 					case BTNXO_1:
-
+						cObject.sendMessage("A1");
+						/*A1Buf = cObject.recvMessage(cObject.buf);
+						if (A1Buf == "NO")
+						{
+							SetWindowText(chatOutput, ">> Not a viable placement");
+						}
+						else if (A1Buf == "OK")
+						{
+							MessageBeep(MB_OK);
+							SetWindowText(hBtn1, (LPCSTR) "X");
+						}
+						else if (A1Buf == "NO TURN")
+						{
+							SetWindowText(chatOutput, ">> Not your turn bucko!!");
+						}*/
+						// if bool recieved is true set x or o
+						// else if false throw error
+						//cObject.sendMessage(charOut);
+						// receive chat message from server
+						tempString = cObject.recvMessage(cObject.buf);
+						//tempString2 = new char[tempString.length()+1];
+						//strcpy(tempString2, tempString.c_str);
+						for (int i = 0; i < tempString.length(); i++)
+						{
+							tempChar[i] = tempString[i];
+						}
+						//set chat message in chat window
+						SetWindowText(chatOutput, tempChar);
 						break;
 
 					case BTNXO_2:
@@ -319,12 +348,25 @@
 						GetWindowText(chatInput, chatMSG, 4096);
 						GetWindowText(userName, userNameVar, 30);
 						
+						
+
 						strcat_s(userNameVar, ": ");
 						strcat_s(charOut, userNameVar);
 						strcat_s(charOut, chatMSG);
 						strcat_s(charOut, "\r\n");
-						
-						SetWindowText(chatOutput, charOut);
+						// send chat message to server
+						cObject.sendMessage(charOut);
+						// receive chat message from server
+						tempString = cObject.recvMessage(cObject.buf);
+						//tempString2 = new char[tempString.length()+1];
+						//strcpy(tempString2, tempString.c_str);
+						for (int i = 0; i < tempString.length(); i++) 
+						{
+							tempChar[i] = tempString[i];
+						}
+						//set chat message in chat window
+						SetWindowText(chatOutput, tempChar);
+						// reset chat input box..
 						SetWindowText(chatInput, "");
 						break;
 

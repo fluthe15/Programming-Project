@@ -13,7 +13,8 @@ Client::~Client()
 {
 }
 
-void sendMessage(std::string msg_, SOCKET sock_);
+SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+char buf[4096];
 
 void Client::Connect_To_Server(std::string IPADD, int PORT)
 			{
@@ -31,7 +32,7 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 				}
 
 				// Create socket
-				SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+				sock = socket(AF_INET, SOCK_STREAM, 0);
 				if (sock == INVALID_SOCKET)
 				{
 					std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
@@ -95,19 +96,19 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 
 			}
 
-void sendMessage(std::string msg_, SOCKET sock_) 
+void Client::sendMessage(std::string msg_) 
 {
-	int sendResult = send(sock_, msg_.c_str(), msg_.size() + 1, 0);
+	send(sock, msg_.c_str(), msg_.size() + 1, 0);
 }
 
-std::string recvMessage(char buf_[4096], SOCKET sock_) 
+std::string Client::recvMessage(char buf_[4096]) 
 {
 	bool receiving = true;
 	while (receiving) 
 	{
 		// Wait for response
 		ZeroMemory(buf_, 4096);
-		int bytesReceived = recv(sock_, buf_, 4096, 0);
+		int bytesReceived = recv(sock, buf_, 4096, 0);
 		// if we received something, stop listening..
 		if (bytesReceived > 0) { receiving = false; }
 	}
@@ -116,8 +117,8 @@ std::string recvMessage(char buf_[4096], SOCKET sock_)
 	return returnString;
 }
 
-void graceDisconnect(SOCKET sock_) 
+void Client::graceDisconnect() 
 {
-	closesocket(sock_);
+	closesocket(sock);
 	WSACleanup();
 }
