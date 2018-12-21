@@ -211,7 +211,8 @@ int main()
 							// client asked for the tile (-1, because 0 is reserved for testing against)
 
 							// is it player 1? (first to connect)
-							if (sock == master.fd_array[2])
+							//if (sock == master.fd_array[2])
+							if(turn)
 							{
 								// if the tile is vacant
 								if (tiles[controlInt - 1].state = false)
@@ -221,16 +222,18 @@ int main()
 									// occupy tile
 									tiles[controlInt - 1].state = true;
 									// give over turn
+									send(sock, "OK", 3, 0);
 									switchTurn();
 								}
 								// if the tile is occupied
 								else if (tiles[controlInt - 1].state = true)
 								{
-
+									send(sock, "NO",3,0);
 								}
 							}
 							// or is it player 2? (second to connect)
-							else if (sock == master.fd_array[3])
+							//else if (sock == master.fd_array[3])
+							else if(!turn)
 							{
 								// if the tile is vacant
 								if (tiles[controlInt - 1].state = false)
@@ -240,18 +243,25 @@ int main()
 									// occupy tile
 									tiles[controlInt - 1].state = true;
 									// give over turn
+									send(sock, "OK",3,0);
 									switchTurn();
 								}
 								// if the tile is occupied
 								else if (tiles[controlInt - 1].state = true)
 								{
-
+									send(sock, "NO", 3, 0);
 								}
 							}
 
 						}
 					}
-					
+					else 
+					{
+						// default response..
+						send(sock, "response! \r\n", 13, 0);
+					}
+					/*
+
 					// as an example, we can assemble a string with a PREFIX and then the BUFFER
 					// using stringstream assembly magic made from bunnyfarts and vomit
 					ss.str("");
@@ -276,6 +286,9 @@ int main()
 							send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
 						}
 					}
+
+
+					*/
 				}
 			}
 
