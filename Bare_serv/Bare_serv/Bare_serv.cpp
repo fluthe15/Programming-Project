@@ -232,9 +232,9 @@ int main()
 								{
 									std::cerr << "1 Received and placement is OK with turn true!" << std::endl;
 									// claim ownership
-									tiles[controlInt - 1].owner == "P1";
+									tiles[controlInt - 1].owner = "P1";
 									// occupy tile
-									tiles[controlInt - 1].state == true;
+									tiles[controlInt - 1].state = true;
 									// give over turn
 									send(sock, "OK1", 3, 0);
 									switchTurn();
@@ -255,9 +255,9 @@ int main()
 								if (tiles[controlInt - 1].state == false)
 								{
 									// claim ownership
-									tiles[controlInt - 1].owner == "P2";
+									tiles[controlInt - 1].owner = "P2";
 									// occupy tile
-									tiles[controlInt - 1].state == true;
+									tiles[controlInt - 1].state = true;
 									// give over turn
 									send(sock, "OK2",3,0);
 									switchTurn();
@@ -276,6 +276,7 @@ int main()
 					{
 						// default response..
 						send(sock, "response! \r\n", 13, 0);
+					}
 					}
 					/*
 
@@ -306,7 +307,6 @@ int main()
 
 
 					*/
-				}
 			}
 
 		}
@@ -319,24 +319,26 @@ void switchTurn()
 {
 	// give the turn over, in effect just switch a boolean
 	// true is player 1, false is player 2
-	turn = !turn;
-	if (checkForWin()) 
+	std::cout << "Checking for win:" << std::endl;
+	if (checkForWin())
 	{
+		std::cout << "Someone won:" << std::endl;
 		// SOMEBODY WON!!!!
-		// so we we send a message to that somebody!
-		if (winner == "Player 1") 
+		if (winner == "Player 1")
 		{
-		
+			std::cout << "Player 1 won!" << std::endl;
 		}
-		else if (winner == "Player 2") 
+		else if (winner == "Player 2")
 		{
-		
+			std::cout << "Player 2 won!" << std::endl;
 		}
 	}
-	
+
+	turn = !turn;
+
 }
 
-boolean checkForWin() 
+boolean checkForWin()
 {
 	// check for a win condition here
 	// we have 8 combinations of tiles that result in win
@@ -344,46 +346,62 @@ boolean checkForWin()
 	// in the case of a win...
 	boolean aWin = false;
 	
-	if (tiles[1].state == true && tiles[2].state == true && tiles[3].state == true) 
+	if (tiles[0].owner == tiles[1].owner && tiles[1].owner == tiles[2].owner) 
 	{
-		if (tiles[1].owner == "P1") 
+		std::cout << "Owners match" << std::endl;
+		if (tiles[0].owner == "P1") 
+		{
+			aWin = true;
+			winner = "Player 1";
+			std::cout << "Owner is p1" << std::endl;
+		}
+		else if (tiles[0].owner == "P2") 
+		{
+			aWin = true;
+			winner = "Player 2";
+			std::cout << "Owner is p2" << std::endl;
+		}
+	}
+	else if (tiles[3].owner == tiles[4].owner && tiles[4].owner == tiles[5].owner)
+	{
+		if (tiles[3].owner == "P1")
 		{
 			aWin = true;
 			winner = "Player 1";
 		}
-		else if (tiles[1].owner == "P2") 
+		else if (tiles[3].owner == "P2")
 		{
 			aWin = true;
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[4].state == true && tiles[5].state == true && tiles[6].state == true)
+	else if (tiles[6].owner == tiles[7].owner && tiles[7].owner == tiles[8].owner)
 	{
-		if (tiles[4].owner == "P1")
+		if (tiles[6].owner == "P1")
 		{
 			aWin = true;
 			winner = "Player 1";
 		}
-		else if (tiles[4].owner == "P2")
+		else if (tiles[6].owner == "P2")
 		{
 			aWin = true;
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[7].state == true && tiles[8].state == true && tiles[9].state == true)
+	else if (tiles[0].owner == tiles[3].owner && tiles[3].owner == tiles[6].owner)
 	{
-		if (tiles[7].owner == "P1")
+		if (tiles[0].owner == "P1")
 		{
 			aWin = true;
 			winner = "Player 1";
 		}
-		else if (tiles[7].owner == "P2")
+		else if (tiles[0].owner == "P2")
 		{
 			aWin = true;
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[1].state == true && tiles[4].state == true && tiles[7].state == true)
+	else if (tiles[1].owner == tiles[4].owner && tiles[4].owner == tiles[7].owner)
 	{
 		if (tiles[1].owner == "P1")
 		{
@@ -396,7 +414,7 @@ boolean checkForWin()
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[2].state == true && tiles[5].state == true && tiles[8].state == true)
+	else if (tiles[2].owner == tiles[5].owner && tiles[5].owner == tiles[8].owner)
 	{
 		if (tiles[2].owner == "P1")
 		{
@@ -409,40 +427,27 @@ boolean checkForWin()
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[3].state == true && tiles[6].state == true && tiles[9].state == true)
+	else if (tiles[0].owner == tiles[4].owner && tiles[4].owner == tiles[8].owner)
 	{
-		if (tiles[3].owner == "P1")
+		if (tiles[0].owner == "P1")
 		{
 			aWin = true;
 			winner = "Player 1";
 		}
-		else if (tiles[3].owner == "P2")
+		else if (tiles[0].owner == "P2")
 		{
 			aWin = true;
 			winner = "Player 2";
 		}
 	}
-	else if (tiles[1].state == true && tiles[5].state == true && tiles[9].state == true)
+	else if (tiles[2].owner == tiles[4].owner && tiles[4].owner == tiles[6].owner)
 	{
-		if (tiles[1].owner == "P1")
+		if (tiles[2].owner == "P1")
 		{
 			aWin = true;
 			winner = "Player 1";
 		}
-		else if (tiles[1].owner == "P2")
-		{
-			aWin = true;
-			winner = "Player 2";
-		}
-	}
-	else if (tiles[3].state == true && tiles[5].state == true && tiles[7].state == true)
-	{
-		if (tiles[3].owner == "P1")
-		{
-			aWin = true;
-			winner = "Player 1";
-		}
-		else if (tiles[3].owner == "P2")
+		else if (tiles[2].owner == "P2")
 		{
 			aWin = true;
 			winner = "Player 2";

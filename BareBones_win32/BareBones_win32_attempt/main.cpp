@@ -159,9 +159,7 @@
 					NULL								// lParams, we pass NULL (ignore it)
 
 					// we now created a window, but it will not show without a loop that shows it!
-
 				);
-
 				// the loop responsible for continually drawing our window
 				// this loop will break either when we press the button or otherwise close the window
 				MSG msg = { 0 };
@@ -193,8 +191,10 @@
 					case GAME_OPTION_START:
 						MessageBeep(MB_OK);		// make a little beep
 						PopUp(hMainWindow, L"404 Game not found!", L"Click");			// a popup to replace content....
-						break;
+						break;  
 					
+
+						// For these cases we do an action, depending on the incoming message from the server.
 					case BTNXO_1:
 						cObject.sendMessage("1");
 						
@@ -305,7 +305,7 @@
 						cObject.sendMessage("5");
 
 						tempStringFive = cObject.recvMessage(cObject.buf);
-
+				
 						if (tempStringFive == "OK1")
 						{
 							SetWindowText(hBtn5, (LPCSTR) "X");
@@ -331,7 +331,13 @@
 
 						tempStringSix = cObject.recvMessage(cObject.buf);
 
-						if (tempStringSix == "OK1")
+						if (tempStringSix == "Player1Won") {
+							SetWindowText(chatOutput, "Player 1 Won");
+						}
+						else if (tempStringSix == "Player2Won") {
+							SetWindowText(chatOutput, "Player 2 Won");
+						}
+						else if (tempStringSix == "OK1")
 						{
 							SetWindowText(hBtn6, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '6'");
@@ -356,7 +362,13 @@
 
 						tempStringSeven = cObject.recvMessage(cObject.buf);
 
-						if (tempStringSeven == "OK1")
+						if (tempStringSeven == "Player1Won") {
+							SetWindowText(chatOutput, "Player 1 Won");
+						}
+						else if (tempStringSeven == "Player2Won") {
+							SetWindowText(chatOutput, "Player 2 Won");
+						}
+						else if (tempStringSeven == "OK1")
 						{
 							SetWindowText(hBtn7, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '7'");
@@ -381,7 +393,13 @@
 
 						tempStringEight = cObject.recvMessage(cObject.buf);
 
-						if (tempStringEight == "OK1")
+						if (tempStringEight == "Player1Won") {
+							SetWindowText(chatOutput, "Player 1 Won");
+						}
+						else if (tempStringEight == "Player2Won") {
+							SetWindowText(chatOutput, "Player 2 Won");
+						}
+						else if (tempStringEight == "OK1")
 						{
 							SetWindowText(hBtn8, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '8'");
@@ -406,7 +424,13 @@
 
 						tempStringNine = cObject.recvMessage(cObject.buf);
 
-						if (tempStringNine == "OK1")
+						if (tempStringNine == "Player1Won") {
+							SetWindowText(chatOutput, "Player 1 Won");
+						}
+						else if (tempStringNine == "Player2Won") {
+							SetWindowText(chatOutput, "Player 2 Won");
+						}
+						else if (tempStringNine == "OK1")
 						{
 							SetWindowText(hBtn9, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '9'");
