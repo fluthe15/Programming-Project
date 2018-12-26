@@ -1,9 +1,8 @@
 ﻿  Bare_serv.cpp
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(233): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(233): warning C4553: '==': result of expression not used; did you intend '='?
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(239): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(254): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(254): warning C4553: '==': result of expression not used; did you intend '='?
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(260): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(315): warning C4552: '!=': result of expression not used
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(234): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(234): warning C4553: '==': result of expression not used; did you intend '='?
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(240): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(257): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(257): warning C4553: '==': result of expression not used; did you intend '='?
+c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(263): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
   Bare_serv.vcxproj -> C:\Users\nicol\Documents\Gitkraken\Programming_Mini_Project\Programming-Project\Bare_serv\Debug\Bare_serv.exe

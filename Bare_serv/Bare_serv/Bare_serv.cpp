@@ -227,24 +227,27 @@ int main()
 								// if the tile is vacant
 								if (tiles[controlInt - 1].state == false)
 								{
+									std::cerr << "1 Received and placement is OK with turn true!" << std::endl;
 									// claim ownership
 									tiles[controlInt - 1].owner == "P1";
 									// occupy tile
 									tiles[controlInt - 1].state == true;
 									// give over turn
-									send(sock, "OK", 3, 0);
+									send(sock, "OK1", 3, 0);
 									switchTurn();
 								}
 								// if the tile is occupied
 								else if (tiles[controlInt - 1].state == true)
 								{
-									send(sock, "NO",3,0);
+									std::cerr << "1 Received and NO! placement with turn true!" << std::endl;
+									send(sock, "NO1",3,0);
 								}
 							}
 							// or is it player 2? (second to connect)
 							//else if (sock == master.fd_array[3])
 							else if(!turn)
 							{
+								std::cerr << "1 Received and placement is OK with turn false!" << std::endl;
 								// if the tile is vacant
 								if (tiles[controlInt - 1].state == false)
 								{
@@ -253,13 +256,14 @@ int main()
 									// occupy tile
 									tiles[controlInt - 1].state == true;
 									// give over turn
-									send(sock, "OK",3,0);
+									send(sock, "OK2",3,0);
 									switchTurn();
 								}
 								// if the tile is occupied
 								else if (tiles[controlInt - 1].state == true)
 								{
-									send(sock, "NO", 3, 0);
+									std::cerr << "1 Received and NO! placement with turn false!" << std::endl;
+									send(sock, "NO2", 3, 0);
 								}
 							}
 
@@ -312,7 +316,7 @@ void switchTurn()
 {
 	// give the turn over, in effect just switch a boolean
 	// true is player 1, false is player 2
-	turn != turn;
+	turn = !turn;
 	if (checkForWin()) 
 	{
 		// SOMEBODY WON!!!!
