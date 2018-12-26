@@ -54,6 +54,10 @@ int main()
 		std::cerr << "winsock could not be initialized!" << std::endl;
 		return 1; // if we cant initialize winsock, throw error!
 	}
+	else if (wsOK == 0)
+	{
+		std::cerr << "winsock Initialized!" << std::endl;
+	}
 
 
 	// next we create a socket to bind to
@@ -62,6 +66,10 @@ int main()
 	{
 		std::cerr << "cannot create socket!" << std::endl;
 		return 1; // if we cannot create a socket for listening, throw error!
+	}
+	else if (listening != INVALID_SOCKET)
+	{
+		std::cerr << "socket created!" << std::endl;
 	}
 
 
@@ -122,6 +130,8 @@ int main()
 				//  (here the first nullptr is actually info on the client, so it may
 				//   be used for identification for us, look into it!)
 				SOCKET client = accept(listening, nullptr, nullptr);
+
+				std::cerr << "Connection established!" << std::endl;
 
 				// and then we add this connection to the master FD SET
 				// note here we are using the real set, not the one we sacced!
@@ -215,18 +225,18 @@ int main()
 							if(turn)
 							{
 								// if the tile is vacant
-								if (tiles[controlInt - 1].state = false)
+								if (tiles[controlInt - 1].state == false)
 								{
 									// claim ownership
-									tiles[controlInt - 1].owner = "P1";
+									tiles[controlInt - 1].owner == "P1";
 									// occupy tile
-									tiles[controlInt - 1].state = true;
+									tiles[controlInt - 1].state == true;
 									// give over turn
 									send(sock, "OK", 3, 0);
 									switchTurn();
 								}
 								// if the tile is occupied
-								else if (tiles[controlInt - 1].state = true)
+								else if (tiles[controlInt - 1].state == true)
 								{
 									send(sock, "NO",3,0);
 								}
@@ -236,18 +246,18 @@ int main()
 							else if(!turn)
 							{
 								// if the tile is vacant
-								if (tiles[controlInt - 1].state = false)
+								if (tiles[controlInt - 1].state == false)
 								{
 									// claim ownership
-									tiles[controlInt - 1].owner = "P2";
+									tiles[controlInt - 1].owner == "P2";
 									// occupy tile
-									tiles[controlInt - 1].state = true;
+									tiles[controlInt - 1].state == true;
 									// give over turn
 									send(sock, "OK",3,0);
 									switchTurn();
 								}
 								// if the tile is occupied
-								else if (tiles[controlInt - 1].state = true)
+								else if (tiles[controlInt - 1].state == true)
 								{
 									send(sock, "NO", 3, 0);
 								}
