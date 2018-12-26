@@ -258,7 +258,7 @@
 
 						if (tempStringThree == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn3, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '3'");
 						}
 						else if (tempStringThree == "NO1")
@@ -267,7 +267,7 @@
 						}
 						else if (tempStringThree == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn3, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '3'");
 						}
 						else if (tempStringThree == "NO2")
@@ -283,7 +283,7 @@
 
 						if (tempStringFour == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn4, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '4'");
 						}
 						else if (tempStringFour == "NO1")
@@ -292,7 +292,7 @@
 						}
 						else if (tempStringFour == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn4, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '4'");
 						}
 						else if (tempStringFour == "NO2")
@@ -308,7 +308,7 @@
 
 						if (tempStringFive == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn5, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '5'");
 						}
 						else if (tempStringFive == "NO1")
@@ -317,7 +317,7 @@
 						}
 						else if (tempStringFive == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn5, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '5'");
 						}
 						else if (tempStringFive == "NO2")
@@ -333,7 +333,7 @@
 
 						if (tempStringSix == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn6, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '6'");
 						}
 						else if (tempStringSix == "NO1")
@@ -342,7 +342,7 @@
 						}
 						else if (tempStringSix == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn6, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '6'");
 						}
 						else if (tempStringSix == "NO2")
@@ -358,7 +358,7 @@
 
 						if (tempStringSeven == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn7, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '7'");
 						}
 						else if (tempStringSeven == "NO1")
@@ -367,7 +367,7 @@
 						}
 						else if (tempStringSeven == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn7, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '7'");
 						}
 						else if (tempStringSeven == "NO2")
@@ -383,7 +383,7 @@
 
 						if (tempStringEight == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn8, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '8'");
 						}
 						else if (tempStringEight == "NO1")
@@ -392,7 +392,7 @@
 						}
 						else if (tempStringEight == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn8, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '8'");
 						}
 						else if (tempStringEight == "NO2")
@@ -408,7 +408,7 @@
 
 						if (tempStringNine == "OK1")
 						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(hBtn9, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '9'");
 						}
 						else if (tempStringNine == "NO1")
@@ -417,7 +417,7 @@
 						}
 						else if (tempStringNine == "OK2")
 						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(hBtn9, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '9'");
 						}
 						else if (tempStringNine == "NO2")
