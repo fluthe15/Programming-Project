@@ -33,6 +33,9 @@ struct Tile
 
 // this boolean controls which players' turn it is
 boolean turn;
+// this string holds a winner, if any..
+std::string winner = "";
+
 
 int main()
 {
@@ -312,18 +315,137 @@ void switchTurn()
 {
 	// give the turn over, in effect just switch a boolean
 	// true is player 1, false is player 2
-	turn != turn;
+	turn = !turn;
 	if (checkForWin()) 
 	{
 		// SOMEBODY WON!!!!
+		// so we we send a message to that somebody!
+		if (winner == "Player 1") 
+		{
+		
+		}
+		else if (winner == "Player 2") 
+		{
+		
+		}
 	}
 	
 }
 
 boolean checkForWin() 
 {
-	// check for a win condition here!!!!!!
-	return false;
+	// check for a win condition here
+	// we have 8 combinations of tiles that result in win
+	// we check them all and see who is the owner
+	// in the case of a win...
+	boolean aWin = false;
+	
+	if (tiles[1].state == true && tiles[2].state == true && tiles[3].state == true) 
+	{
+		if (tiles[1].owner == "P1") 
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[1].owner == "P2") 
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[4].state == true && tiles[5].state == true && tiles[6].state == true)
+	{
+		if (tiles[4].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[4].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[7].state == true && tiles[8].state == true && tiles[9].state == true)
+	{
+		if (tiles[7].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[7].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[1].state == true && tiles[4].state == true && tiles[7].state == true)
+	{
+		if (tiles[1].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[1].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[2].state == true && tiles[5].state == true && tiles[8].state == true)
+	{
+		if (tiles[2].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[2].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[3].state == true && tiles[6].state == true && tiles[9].state == true)
+	{
+		if (tiles[3].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[3].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[1].state == true && tiles[5].state == true && tiles[9].state == true)
+	{
+		if (tiles[1].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[1].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else if (tiles[3].state == true && tiles[5].state == true && tiles[7].state == true)
+	{
+		if (tiles[3].owner == "P1")
+		{
+			aWin = true;
+			winner = "Player 1";
+		}
+		else if (tiles[3].owner == "P2")
+		{
+			aWin = true;
+			winner = "Player 2";
+		}
+	}
+	else aWin = false;
+	return aWin;
 }
 
 void resetValues()
