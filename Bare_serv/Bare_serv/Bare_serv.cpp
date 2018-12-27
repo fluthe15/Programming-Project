@@ -85,7 +85,6 @@ int main()
 	bind(listening, (sockaddr*)&hint, sizeof(hint));											// notice the casting as pointer of hint addr!
 
 
-
 	// assign the socket for listening
 	listen(listening, SOMAXCONN);																// we want listening to be a listening socket!
 
@@ -114,11 +113,11 @@ int main()
 		// select works as a sort of queue of sockets, since we are handling this 
 		// synchronously, rather than async..
 		// select does many things, what we want to do is read, so thats the one we use
-		// and the rest gets a null pointer.. NOTE: we use copy since thats our sacrificial set
+		// and the rest gets a null pointer.. NOTE: we use copyOfMaster since thats our sacrificial set
 		int socketCount = select(0, &copyOfMaster, nullptr, nullptr, nullptr);
 		
 		
-		// now we have our sockets inside copy, and we need a way to iterate on them, so for-loop!
+		// now we have our sockets inside copyOfMaster, and we need a way to iterate on them, so for-loop!
 		for (int i = 0; i < socketCount; i++)
 		{
 			// in this loop, we want to distingush our sockets a bit from each other
@@ -132,10 +131,10 @@ int main()
 				//so first we accept the connection
 				//  (here the first nullptr is actually info on the client, so it may
 				//   be used for identification for us, look into it!)
-				SOCKET client = accept(listening, nullptr, nullptr);
+				SOCKET client = accept(listening,nullptr, nullptr);
 
 				std::cerr << "Connection established!" << std::endl;
-
+				
 				// and then we add this connection to the master FD SET
 				// note here we are using the real set, not the one we sacced!
 				FD_SET(client, &master);
@@ -223,111 +222,127 @@ int main()
 							// now we can set the proper values of our tiles, based on which
 							// client asked for the tile (-1, because 0 is reserved for testing against)
 
-							// is it player 1? (first to connect)
-							//if (sock == master.fd_array[2])
-							if(turn)
+							// is it player 2? (second to connect)
+							if (sock == master.fd_array[2])
+							
 							{
-								// if the tile is vacant
-								if (tiles[controlInt - 1].state == false)
+								if (!turn) 
 								{
-									std::cout << controlInt << " Received and placement is OK with turn true!" << std::endl;
-									// claim ownership
-									tiles[controlInt - 1].owner = "P1";
-									// occupy tile
-									tiles[controlInt - 1].state = true;
-									// give over turn
-									send(sock, "OK1", 3, 0);
-
-									// Send message to other client
-									for (int i = 0; i < master.fd_count; i++)
+									// if the tile is vacant
+									if (tiles[controlInt - 1].state == false)
 									{
-										// .. so we treat the i'th element of all the sockets in the FD set:
-										SOCKET outSock = master.fd_array[i];
-										// and if they are not a listening socket..
-										// here we could also do != sock, if we did not want the message
-										// to go back to the one that sent it..
-										if (outSock != listening && outSock != sock)
+										std::cout << controlInt << " Received and placement is OK with turn true!" << std::endl;
+										// claim ownership
+										tiles[controlInt - 1].owner = "P2";
+										// occupy tile
+										tiles[controlInt - 1].state = true;
+										// give over turn
+										send(sock, "OK2", 3, 0);
+
+										// Send message to other client
+										for (int i = 0; i < master.fd_count; i++)
 										{
-											send(outSock, "OK1" + controlInt, 4, 0);
-											std::cout << "OK1" << + controlInt << " Sent to other client" << std::endl;
+											// .. so we treat the i'th element of all the sockets in the FD set:
+											SOCKET outSock = master.fd_array[i];
+											// and if they are not a listening socket..
+											// here we could also do != sock, if we did not want the message
+											// to go back to the one that sent it..
+											if (outSock != listening && outSock != sock)
+											{
+												send(outSock, "OK2" + controlInt, 4, 0);
+												std::cout << "OK2" << +controlInt << " Sent to other client" << std::endl;
+											}
+										}
+										switchTurn();
+									}
+									// if the tile is occupied
+									else if (tiles[controlInt - 1].state == true)
+									{
+										std::cerr << controlInt << " Received and NO! placement with turn true!" << std::endl;
+										send(sock, "NO2", 3, 0);
+
+										// Send message to other client
+										for (int i = 0; i < master.fd_count; i++)
+										{
+											// .. so we treat the i'th element of all the sockets in the FD set:
+											SOCKET outSock = master.fd_array[i];
+											// and if they are not a listening socket..
+											// here we could also do != sock, if we did not want the message
+											// to go back to the one that sent it..
+											if (outSock != listening && outSock != sock)
+											{
+												send(outSock, "NO2" + controlInt, 4, 0);
+												std::cout << "NO2" << +controlInt << " Sent to other client" << std::endl;
+											}
 										}
 									}
-									switchTurn();
+								
 								}
-								// if the tile is occupied
-								else if (tiles[controlInt - 1].state == true)
+								else if (turn) 
 								{
-									std::cerr << controlInt << " Received and NO! placement with turn true!" << std::endl;
-									send(sock, "NO1",3,0);
-
-									// Send message to other client
-									for (int i = 0; i < master.fd_count; i++)
-									{
-										// .. so we treat the i'th element of all the sockets in the FD set:
-										SOCKET outSock = master.fd_array[i];
-										// and if they are not a listening socket..
-										// here we could also do != sock, if we did not want the message
-										// to go back to the one that sent it..
-										if (outSock != listening && outSock != sock)
-										{
-											send(outSock, "NO1" + controlInt, 4, 0);
-											std::cout << "NO1" << +controlInt << " Sent to other client" << std::endl;
-										}
-									}
+									send(sock, "NOT YOUR TURN", 14, 0);
 								}
+								
 							}
-							// or is it player 2? (second to connect)
-							//else if (sock == master.fd_array[3])
-							else if(!turn)
+							// or is it player 1? (first to connect)
+							else
 							{
-								std::cerr << controlInt << " Received and placement is OK with turn false!" << std::endl;
-								// if the tile is vacant
-								if (tiles[controlInt - 1].state == false)
+								if (turn) 
 								{
-									// claim ownership
-									tiles[controlInt - 1].owner = "P2";
-									// occupy tile
-									tiles[controlInt - 1].state = true;
-									// give over turn
-									send(sock, "OK2",3,0);
-
-									// Send message to other client
-									for (int i = 0; i < master.fd_count; i++)
+									std::cerr << controlInt << " Received and placement is OK with turn false!" << std::endl;
+									// if the tile is vacant
+									if (tiles[controlInt - 1].state == false)
 									{
-										// .. so we treat the i'th element of all the sockets in the FD set:
-										SOCKET outSock = master.fd_array[i];
-										// and if they are not a listening socket..
-										// here we could also do != sock, if we did not want the message
-										// to go back to the one that sent it..
-										if (outSock != listening && outSock != sock)
+										// claim ownership
+										tiles[controlInt - 1].owner = "P1";
+										// occupy tile
+										tiles[controlInt - 1].state = true;
+										// give over turn
+										send(sock, "OK1", 3, 0);
+
+										// Send message to other client
+										for (int i = 0; i < master.fd_count; i++)
 										{
-											send(outSock, "OK2" + controlInt, 4, 0);
-											std::cout << "OK2" << +controlInt << " Sent to other client" << std::endl;
+											// .. so we treat the i'th element of all the sockets in the FD set:
+											SOCKET outSock = master.fd_array[i];
+											// and if they are not a listening socket..
+											// here we could also do != sock, if we did not want the message
+											// to go back to the one that sent it..
+											if (outSock != listening && outSock != sock)
+											{
+												send(outSock, "OK1" + controlInt, 4, 0);
+												std::cout << "OK1" << +controlInt << " Sent to other client" << std::endl;
+											}
+										}
+										switchTurn();
+									}
+									// if the tile is occupied
+									else if (tiles[controlInt - 1].state == true)
+									{
+										std::cerr << controlInt << " Received and NO! placement with turn false!" << std::endl;
+										send(sock, "NO1", 3, 0);
+
+										// Send message to other client
+										for (int i = 0; i < master.fd_count; i++)
+										{
+											// .. so we treat the i'th element of all the sockets in the FD set:
+											SOCKET outSock = master.fd_array[i];
+											// and if they are not a listening socket..
+											// here we could also do != sock, if we did not want the message
+											// to go back to the one that sent it..
+											if (outSock != listening && outSock != sock)
+											{
+												send(outSock, "NO1" + controlInt, 4, 0);
+												std::cout << "NO1" << +controlInt << " Sent to other client" << std::endl;
+											}
 										}
 									}
-									switchTurn();
 								}
-								// if the tile is occupied
-								else if (tiles[controlInt - 1].state == true)
+								else if (!turn) 
 								{
-									std::cerr << controlInt << " Received and NO! placement with turn false!" << std::endl;
-									send(sock, "NO2", 3, 0);
-
-									// Send message to other client
-									for (int i = 0; i < master.fd_count; i++)
-									{
-										// .. so we treat the i'th element of all the sockets in the FD set:
-										SOCKET outSock = master.fd_array[i];
-										// and if they are not a listening socket..
-										// here we could also do != sock, if we did not want the message
-										// to go back to the one that sent it..
-										if (outSock != listening && outSock != sock)
-										{
-											send(outSock, "NO2" + controlInt, 4, 0);
-											std::cout << "NO2" << +controlInt << " Sent to other client" << std::endl;
-										}
-									}
+									send(sock, "NOT YOUR TURN", 14, 0);
 								}
+								
 							}
 
 						}
