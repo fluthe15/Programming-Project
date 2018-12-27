@@ -21,6 +21,12 @@
 			char textSaved2[20];
 			char textSaved3[20];
 
+
+
+			/*TODO: HAVE SOMETHING UPDATE REGULARLY TO CHECK IF AN OPPONENT HAS MADE A MOVE, OR THE GAME IS OVER, AND IF SO, SET MYTURN TO TRUE, OR END GAME DEPENDING ON WHICH*/
+
+			/*TODO: MAKE AN ERROR MESSAGE IF YOU CLICK A BUTTON WITHOUT BEING CONNECTED*/
+
 			// Char array to store content of buttons
 			char XO1[3]; char XO2[3]; char XO3[3]; char XO4[3]; char XO5[3]; char XO6[3]; char XO7[3]; char XO8[3]; char XO9[3];
 
@@ -203,6 +209,7 @@
 						{
 							SetWindowText(hBtn1, (LPCSTR) "X");
 							SetWindowText(chatOutput, "You placed 'X' on position '1'");
+							// set MYTURN to false
 						}
 						else if (tempString == "NO1")
 						{
@@ -212,6 +219,7 @@
 						{
 							SetWindowText(hBtn1, (LPCSTR) "O");
 							SetWindowText(chatOutput, "You placed 'O' on position '1'");
+							// set MYTURN to false
 						}
 						else if (tempString == "NO2")
 						{
