@@ -180,8 +180,8 @@
 				// switch case to see the value of msg
 				switch (msg)
 				{
-					// this is called every time a menu line item or button has been clicked
-				
+					// this is called every time a menu line item or button has been clicked				
+
 				case WM_COMMAND:
 					// here we use wp(WPARAM) to identify what was clicked
 					switch (wp)
@@ -193,7 +193,6 @@
 						PopUp(hMainWindow, L"404 Game not found!", L"Click");			// a popup to replace content....
 						break;  
 					
-
 						// For these cases we do an action, depending on the incoming message from the server.
 					case BTNXO_1:
 						cObject.sendMessage("1");
