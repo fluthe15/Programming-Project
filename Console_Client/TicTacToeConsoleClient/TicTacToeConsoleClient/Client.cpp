@@ -59,6 +59,7 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 	else 
 	{
 		std::cout << "Connected to server!" << std::endl;
+		return;
 	}
 
 	//here and up is connection to server

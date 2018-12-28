@@ -170,6 +170,8 @@ int main()
 					std::ostringstream ss;
 						ss << buf;
 						std::string stringBuf = ss.str();
+
+					std::cout << stringBuf << std::endl;
 						
 					// now to see if the message was a request for a tile
 					// by seeing if we get a digit as the first part of the string
@@ -371,6 +373,31 @@ int main()
 
 					//std::cout << "good job, son" << std::endl;
 					send(sock, "just something", 15, 0);
+					}
+					else if (stringBuf == "valueOfTurn")
+					{
+						if (sock == master.fd_array[2])
+						{
+							if (turn == false)
+							{
+								send(sock, "yes", 4, 0);
+							}
+							else
+							{
+								send(sock, "no", 3, 0);
+							}
+						}
+						else
+						{
+							if (turn == true)
+							{
+								send(sock, "yes", 4, 0);
+							}
+							else
+							{
+								send(sock, "no", 3, 0);
+							}
+						}
 					}
 					}
 
