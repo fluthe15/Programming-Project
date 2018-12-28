@@ -231,7 +231,7 @@ int main()
 									// if the tile is vacant
 									if (tiles[controlInt - 1].state == false)
 									{
-										std::cout << controlInt << " Received and placement is OK with turn true!" << std::endl;
+										std::cout << controlInt << " Received and placement is OK with turn false!" << std::endl;
 										// claim ownership
 										tiles[controlInt - 1].owner = "P2";
 										// occupy tile
@@ -262,7 +262,7 @@ int main()
 									// if the tile is occupied
 									else if (tiles[controlInt - 1].state == true)
 									{
-										std::cerr << controlInt << " Received and NO! placement with turn true!" << std::endl;
+										std::cerr << controlInt << " Received and NO! placement with turn false!" << std::endl;
 										//send(sock, "NO2", 3, 0);
 
 										// Send message to other client
@@ -297,7 +297,7 @@ int main()
 							{
 								if (turn) 
 								{
-									std::cerr << controlInt << " Received and placement is OK with turn false!" << std::endl;
+									std::cerr << controlInt << " Received and placement is OK with turn true!" << std::endl;
 									// if the tile is vacant
 									if (tiles[controlInt - 1].state == false)
 									{
@@ -334,7 +334,7 @@ int main()
 									// if the tile is occupied
 									else if (tiles[controlInt - 1].state == true)
 									{
-										std::cerr << controlInt << " Received and NO! placement with turn false!" << std::endl;
+										std::cerr << controlInt << " Received and NO! placement with turn true!" << std::endl;
 										//send(sock, "NO1", 3, 0);
 
 										// Send message to other client
@@ -369,7 +369,7 @@ int main()
 					else if (stringBuf == "i did it daddy") 
 					{
 
-					std::cout << "good job, son" << std::endl;
+					//std::cout << "good job, son" << std::endl;
 					send(sock, "just something", 15, 0);
 					}
 					}

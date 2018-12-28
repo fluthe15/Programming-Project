@@ -88,6 +88,7 @@
 			string tempStringEight;
 			string tempStringNine;
 			string A1Buf;
+			string temp;
 			char chatMSG[4096];
 			char charOut[4096];
 			char userNameVar[30];
@@ -317,6 +318,7 @@
 					
 						cObject.sendMessage("i did it daddy");
 						temp = cObject.recvMessage(cObject.buf);
+						//tempTwo = temp.substr(0, 4);
 						SetWindowText(chatOutput, "WEEEE");
 						Sleep(100);
 						if (temp == "just something") {
