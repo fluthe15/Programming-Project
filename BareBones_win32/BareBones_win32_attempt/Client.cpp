@@ -114,7 +114,7 @@ std::string Client::recvMessage(char buf_[4096])
 	}
 	// convert msg received to string, and return it..
 	std::string returnString = buf_;
-	return returnString;
+	return returnString.c_str();
 }
 
 void Client::graceDisconnect() 

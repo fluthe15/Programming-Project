@@ -61,7 +61,6 @@
 			// here we declare a method for the content of the window
 			void AddControls(HWND);
 			void AddConnect(HWND);
-			void pushMsg(HWND, std::string);
 			// the edit style needs a handler so we can get and manipulate user input
 			HWND hEdit;							// we declare the edit handler
 			HWND hEdit1;							// we declare the edit handler
@@ -203,259 +202,38 @@
 						// For these cases we do an action, depending on the incoming message from the server.
 					case BTNXO_1:
 						cObject.sendMessage("1");
-						
-						tempString = cObject.recvMessage(cObject.buf);
-
-						if (tempString == "OK1")
-						{
-							SetWindowText(hBtn1, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '1'");
-							// set MYTURN to false
-						}
-						else if (tempString == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempString == "OK2")
-						{
-							SetWindowText(hBtn1, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '1'");
-							// set MYTURN to false
-						}
-						else if (tempString == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
-						
-						/*for (int i = 0; i < tempString.length(); i++)
-						{
-							tempChar[i] = tempString[i];
-						}*/
-						
 						break;
 
 					case BTNXO_2:
 						cObject.sendMessage("2");
-
-						tempStringTwo = cObject.recvMessage(cObject.buf);
-
-						if (tempStringTwo == "OK1")
-						{
-							SetWindowText(hBtn2, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '2'");
-						}
-						else if (tempStringTwo == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringTwo == "OK2")
-						{
-							SetWindowText(hBtn2, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '2'");
-						}
-						else if (tempStringTwo == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_3:
 						cObject.sendMessage("3");
-
-						tempStringThree = cObject.recvMessage(cObject.buf);
-
-						if (tempStringThree == "OK1")
-						{
-							SetWindowText(hBtn3, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '3'");
-						}
-						else if (tempStringThree == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringThree == "OK2")
-						{
-							SetWindowText(hBtn3, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '3'");
-						}
-						else if (tempStringThree == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_4:
 						cObject.sendMessage("4");
-
-						tempStringFour = cObject.recvMessage(cObject.buf);
-
-						if (tempStringFour == "OK1")
-						{
-							SetWindowText(hBtn4, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '4'");
-						}
-						else if (tempStringFour == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringFour == "OK2")
-						{
-							SetWindowText(hBtn4, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '4'");
-						}
-						else if (tempStringFour == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_5:
 						cObject.sendMessage("5");
-
-						tempStringFive = cObject.recvMessage(cObject.buf);
-				
-						if (tempStringFive == "OK1")
-						{
-							SetWindowText(hBtn5, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '5'");
-						}
-						else if (tempStringFive == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringFive == "OK2")
-						{
-							SetWindowText(hBtn5, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '5'");
-						}
-						else if (tempStringFive == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_6:
 						cObject.sendMessage("6");
-
-						tempStringSix = cObject.recvMessage(cObject.buf);
-
-						if (tempStringSix == "Player1Won") {
-							SetWindowText(chatOutput, "Player 1 Won");
-						}
-						else if (tempStringSix == "Player2Won") {
-							SetWindowText(chatOutput, "Player 2 Won");
-						}
-						else if (tempStringSix == "OK1")
-						{
-							SetWindowText(hBtn6, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '6'");
-						}
-						else if (tempStringSix == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringSix == "OK2")
-						{
-							SetWindowText(hBtn6, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '6'");
-						}
-						else if (tempStringSix == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_7:
 						cObject.sendMessage("7");
-
-						tempStringSeven = cObject.recvMessage(cObject.buf);
-
-						if (tempStringSeven == "Player1Won") {
-							SetWindowText(chatOutput, "Player 1 Won");
-						}
-						else if (tempStringSeven == "Player2Won") {
-							SetWindowText(chatOutput, "Player 2 Won");
-						}
-						else if (tempStringSeven == "OK1")
-						{
-							SetWindowText(hBtn7, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '7'");
-						}
-						else if (tempStringSeven == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringSeven == "OK2")
-						{
-							SetWindowText(hBtn7, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '7'");
-						}
-						else if (tempStringSeven == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_8:
 						cObject.sendMessage("8");
-
-						tempStringEight = cObject.recvMessage(cObject.buf);
-
-						if (tempStringEight == "Player1Won") {
-							SetWindowText(chatOutput, "Player 1 Won");
-						}
-						else if (tempStringEight == "Player2Won") {
-							SetWindowText(chatOutput, "Player 2 Won");
-						}
-						else if (tempStringEight == "OK1")
-						{
-							SetWindowText(hBtn8, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '8'");
-						}
-						else if (tempStringEight == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringEight == "OK2")
-						{
-							SetWindowText(hBtn8, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '8'");
-						}
-						else if (tempStringEight == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case BTNXO_9:
 						cObject.sendMessage("9");
-
-						tempStringNine = cObject.recvMessage(cObject.buf);
-
-						if (tempStringNine == "Player1Won") {
-							SetWindowText(chatOutput, "Player 1 Won");
-						}
-						else if (tempStringNine == "Player2Won") {
-							SetWindowText(chatOutput, "Player 2 Won");
-						}
-						else if (tempStringNine == "OK1")
-						{
-							SetWindowText(hBtn9, (LPCSTR) "X");
-							SetWindowText(chatOutput, "You placed 'X' on position '9'");
-						}
-						else if (tempStringNine == "NO1")
-						{
-							SetWindowText(chatOutput, "Not player 1's turn!");
-						}
-						else if (tempStringNine == "OK2")
-						{
-							SetWindowText(hBtn9, (LPCSTR) "O");
-							SetWindowText(chatOutput, "You placed 'O' on position '9'");
-						}
-						else if (tempStringNine == "NO2")
-						{
-							SetWindowText(chatOutput, "Not player 2's turn!");
-						}
 						break;
 
 					case GAME_OPTION_CLOSE:
@@ -539,15 +317,97 @@
 					
 						cObject.sendMessage("i did it daddy");
 						temp = cObject.recvMessage(cObject.buf);
+						SetWindowText(chatOutput, "WEEEE");
+						Sleep(100);
+						if (temp == "just something") {
+							SetWindowText(chatOutput, "WOOO");
+						}
+
+						if (temp == "OK11")
+						{
+							SetWindowText(hBtn1, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '1'");
+						}
+						if (temp == "OK12")
+						{
+							SetWindowText(hBtn2, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '2'");
+						}
+						if (temp == "OK13")
+						{
+							SetWindowText(hBtn3, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '3'");
+						}
+						if (temp == "OK14")
+						{
+							SetWindowText(hBtn4, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '4'");
+						}
+						if (temp == "OK15")
+						{
+							SetWindowText(hBtn5, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '5'");
+						}
+						if (temp == "OK16")
+						{
+							SetWindowText(hBtn6, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '6'");
+						}
+						if (temp == "OK17")
+						{
+							SetWindowText(hBtn7, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '7'");
+						}
+						if (temp == "OK18")
+						{
+							SetWindowText(hBtn8, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '8'");
+						}
+						if (temp == "OK19")
+						{
+							SetWindowText(hBtn9, (LPCSTR) "X");
+							SetWindowText(chatOutput, "Player 1 placed 'X' on position '9'");
+						}
 						if (temp == "OK21")
 						{
 							SetWindowText(hBtn1, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '1'");
 						}
-						
-					
-					
-					//pushMsg(temp);
-					SetTimer(hMainWindow,pTimer,1000, nullptr);
+						if (temp == "OK22") {
+							SetWindowText(hBtn2, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '2'");
+						}
+						if (temp == "OK23") {
+							SetWindowText(hBtn3, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '3'");
+						}
+						if (temp == "OK24") {
+							SetWindowText(hBtn4, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '4'");
+						}
+						if (temp == "OK25") {
+							SetWindowText(hBtn5, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '5'");
+						}
+						if (temp == "OK26") {
+							SetWindowText(hBtn6, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '6'");
+						}
+						if (temp == "OK27") {
+							SetWindowText(hBtn7, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '7'");
+						}
+						if (temp == "OK28") {
+							SetWindowText(hBtn8, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '8'");
+						}
+						if (temp == "OK29") {
+							SetWindowText(hBtn9, (LPCSTR) "O");
+							SetWindowText(chatOutput, "Player 2 placed 'O' on position '9'");
+						}
+						temp.clear();
+						temp.reserve();
+					SetTimer(hMainWindow,pTimer,250, nullptr);
 					break;
 					/*
 					switch (wp) 
@@ -923,10 +783,4 @@
 				LPCWSTR name = _name;
 				// we create a message-box as a test, MB_OK is the template, 
 				MessageBoxW(hWnd, text, name, MB_OK);
-			}
-
-			void pushMsg(HWND hWnd, std::string temp_) 
-			{
-				SetWindowText(chatOutput, (LPCSTR)temp_.c_str());
-				//SetTimer(hWnd, pTimer, 250, nullptr);
 			}

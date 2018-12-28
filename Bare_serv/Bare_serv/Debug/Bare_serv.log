@@ -1,9 +1,8 @@
-﻿  pch.cpp
-  Bare_serv.cpp
+﻿  Bare_serv.cpp
 c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(243): warning C4018: '<': signed/unsigned mismatch
 c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(263): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
 c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(269): warning C4018: '<': signed/unsigned mismatch
 c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(312): warning C4018: '<': signed/unsigned mismatch
-c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(332): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(338): warning C4018: '<': signed/unsigned mismatch
+c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(334): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+c:\users\oliver\documents\github\programming-project\bare_serv\bare_serv\bare_serv.cpp(340): warning C4018: '<': signed/unsigned mismatch
   Bare_serv.vcxproj -> C:\Users\Oliver\Documents\GitHub\Programming-Project\Bare_serv\Debug\Bare_serv.exe

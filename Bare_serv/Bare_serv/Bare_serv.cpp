@@ -237,7 +237,7 @@ int main()
 										// occupy tile
 										tiles[controlInt - 1].state = true;
 										// give over turn
-										send(sock, "OK2", 3, 0);
+										//send(sock, "OK2", 3, 0);
 
 										// Send message to other client
 										for (int i = 0; i < master.fd_count; i++)
@@ -247,14 +247,14 @@ int main()
 											// and if they are not a listening socket..
 											// here we could also do != sock, if we did not want the message
 											// to go back to the one that sent it..
-											if (outSock != listening && outSock != sock)
+											if (outSock != listening)
 											{
 												ss.str("");
 												ss << "OK2" << controlInt;
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
-												send(outSock, outboundString.c_str(), outboundString.size(), 0);
-												std::cout << outboundString << " Sent to other client" << std::endl;
+												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+												std::cout << outboundString << " Sent" << std::endl;
 											}
 										}
 										switchTurn();
@@ -263,7 +263,7 @@ int main()
 									else if (tiles[controlInt - 1].state == true)
 									{
 										std::cerr << controlInt << " Received and NO! placement with turn true!" << std::endl;
-										send(sock, "NO2", 3, 0);
+										//send(sock, "NO2", 3, 0);
 
 										// Send message to other client
 										for (int i = 0; i < master.fd_count; i++)
@@ -273,22 +273,22 @@ int main()
 											// and if they are not a listening socket..
 											// here we could also do != sock, if we did not want the message
 											// to go back to the one that sent it..
-											if (outSock != listening && outSock != sock)
+											if (outSock != listening)
 											{
 												ss.str("");
-												ss << "NO2" << controlInt;
+												ss << "NO2";
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
-												send(outSock, outboundString.c_str(), outboundString.size(), 0);
-												std::cout << outboundString << " Sent to other client" << std::endl;
+												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+												std::cout << outboundString << " Sent" << std::endl;
 											}
 										}
 									}
 								
 								}
-								else if (turn) 
+								else if (turn)
 								{
-									send(sock, "NOT YOUR TURN", 14, 0);
+									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
 								}
 								
 							}
@@ -306,7 +306,7 @@ int main()
 										// occupy tile
 										tiles[controlInt - 1].state = true;
 										// give over turn
-										send(sock, "OK1", 3, 0);
+										//send(sock, "OK1", 3, 0);
 
 										// Send message to other client
 										for (int i = 0; i < master.fd_count; i++)
@@ -316,14 +316,17 @@ int main()
 											// and if they are not a listening socket..
 											// here we could also do != sock, if we did not want the message
 											// to go back to the one that sent it..
-											if (outSock != listening && outSock != sock)
+											if (outSock != listening)
 											{
+												//ss.str("");
+												//ss << "OK1" << controlInt;
+												//std::string outboundString = ss.str();
 												ss.str("");
-												ss << "OK1" << controlInt;
+												ss << "OK1";
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
-												send(outSock, outboundString.c_str(), outboundString.size(), 0);
-												std::cout << outboundString << " Sent to other client" << std::endl;
+												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+												std::cout << outboundString << " Sent" << std::endl;
 											}
 										}
 										switchTurn();
@@ -332,7 +335,7 @@ int main()
 									else if (tiles[controlInt - 1].state == true)
 									{
 										std::cerr << controlInt << " Received and NO! placement with turn false!" << std::endl;
-										send(sock, "NO1", 3, 0);
+										//send(sock, "NO1", 3, 0);
 
 										// Send message to other client
 										for (int i = 0; i < master.fd_count; i++)
@@ -342,21 +345,20 @@ int main()
 											// and if they are not a listening socket..
 											// here we could also do != sock, if we did not want the message
 											// to go back to the one that sent it..
-											if (outSock != listening && outSock != sock)
+											if (outSock != listening)
 											{
 												ss.str("");
-												ss << "NO1" << controlInt;
+												ss << "NO1";
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
-												send(outSock, outboundString.c_str(), outboundString.size(), 0);
-												std::cout << outboundString << " Sent to other client" << std::endl;
+												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+												std::cout << outboundString << " Sent" << std::endl;
 											}
 										}
 									}
 								}
 								else if (!turn) 
 								{
-									send(sock, "NOT YOUR TURN", 14, 0);
 									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
 								}
 								
@@ -366,13 +368,9 @@ int main()
 					}
 					else if (stringBuf == "i did it daddy") 
 					{
+
 					std::cout << "good job, son" << std::endl;
 					send(sock, "just something", 15, 0);
-					}
-					else 
-					{
-						// default response..
-						send(sock, "response! \r\n", 13, 0);
 					}
 					}
 
