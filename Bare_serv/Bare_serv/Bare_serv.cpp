@@ -322,7 +322,7 @@ int main()
 												//ss << "OK1" << controlInt;
 												//std::string outboundString = ss.str();
 												ss.str("");
-												ss << "OK1";
+												ss << "OK1" << controlInt;
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
 												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);

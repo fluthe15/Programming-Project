@@ -322,7 +322,6 @@
 						if (temp == "just something") {
 							SetWindowText(chatOutput, "WOOO");
 						}
-
 						if (temp == "OK11")
 						{
 							SetWindowText(hBtn1, (LPCSTR) "X");
