@@ -20,8 +20,7 @@
 			char textSaved1[20];
 			char textSaved2[20];
 			char textSaved3[20];
-
-
+			int isConnected = 0;
 
 			/*TODO: HAVE SOMETHING UPDATE REGULARLY TO CHECK IF AN OPPONENT HAS MADE A MOVE, OR THE GAME IS OVER, AND IF SO, SET MYTURN TO TRUE, OR END GAME DEPENDING ON WHICH*/
 
@@ -62,7 +61,7 @@
 			// here we declare a method for the content of the window
 			void AddControls(HWND);
 			void AddConnect(HWND);
-
+			void pushMsg(HWND, std::string);
 			// the edit style needs a handler so we can get and manipulate user input
 			HWND hEdit;							// we declare the edit handler
 			HWND hEdit1;							// we declare the edit handler
@@ -73,7 +72,7 @@
 			HWND chatOutput;
 			HWND userName;
 			HWND hBtn1; HWND hBtn2; HWND hBtn3; HWND hBtn4; HWND hBtn5; HWND hBtn6; HWND hBtn7; HWND hBtn8; HWND hBtn9;
-
+			const UINT_PTR pTimer = 1;
 			void PopUp(HWND, LPCWSTR, LPCWSTR);					// we also declare a popup method
 
 			CHAR ipAddressString[] = { 0 };
@@ -176,13 +175,15 @@
 					// send the message at the adress of msg to winProcedure
 					DispatchMessage(&msg);
 				}
+
 				return 0;
 			}
+
 
 			LRESULT CALLBACK WinProcedure(HWND hMainWindow, UINT msg, WPARAM wp, LPARAM lp)
 			{
 				Client cObject;
-
+				std::string temp;
 				// switch case to see the value of msg
 				switch (msg)
 				{
@@ -499,7 +500,7 @@
 						break;
 
 					case CONNECTION_VIEW:                       // in here we make the window switch 
-						cObject.Connect_To_Server("127.0.0.1", 54000);
+						//cObject.Connect_To_Server("127.0.0.1", 54000);
 						strcat_s(charOut, ">> Connected to server");
 						strcat_s(charOut, "\r\n");
 						SetWindowText(chatOutput, charOut);
@@ -524,13 +525,58 @@
 					break;
 					// the message we expect here is create (called when the window is first created)
 				case WM_CREATE:
-					AddMenus(hMainWindow);								// we add the top menuline here
+					//AddMenus(hMainWindow);								// we add the top menuline here
 					AddControls(hMainWindow);
+					SetTimer(hMainWindow, pTimer, 250, 0);
+					cObject.Connect_To_Server("127.0.0.1", 54000);
 					break;
 					// the message we expect here is destroy (close window with x)
 				case WM_DESTROY:
 					PostQuitMessage(0);
 					break;
+				
+				case WM_TIMER:
+					
+						cObject.sendMessage("i did it daddy");
+						temp = cObject.recvMessage(cObject.buf);
+						if (temp == "OK21")
+						{
+							SetWindowText(hBtn1, (LPCSTR) "O");
+						}
+						
+					
+					
+					//pushMsg(temp);
+					SetTimer(hMainWindow,pTimer,1000, nullptr);
+					break;
+					/*
+					switch (wp) 
+					{
+					case pTimer:
+						std::string temp = cObject.recvMessage(cObject.buf);
+						SetWindowText(chatOutput, (LPCSTR) "ENTERED THE TIMER");
+						return 0;
+						KillTimer(hMainWindow, pTimer);
+						break;
+							// if message is about an opponent move..
+						if (temp == "OK21") 
+						{
+							// if opponent set his mark on 1..
+							SetWindowText(hBtn1, (LPCSTR) "O");
+						}
+						if (temp == "OK11") 
+						{
+							SetWindowText(hBtn1, (LPCSTR) "X");
+						}
+						//else 
+						//{	
+						//	// RUN IT AGAIN! 
+						//	SetTimer(hMainWindow, pTimer, 10000, nullptr);
+						//}
+						break;
+					}
+					break;
+					*/
 					// the default operation for all other messages
 				default:
 					return DefWindowProcW(hMainWindow, msg, wp, lp);
@@ -877,4 +923,10 @@
 				LPCWSTR name = _name;
 				// we create a message-box as a test, MB_OK is the template, 
 				MessageBoxW(hWnd, text, name, MB_OK);
+			}
+
+			void pushMsg(HWND hWnd, std::string temp_) 
+			{
+				SetWindowText(chatOutput, (LPCSTR)temp_.c_str());
+				//SetTimer(hWnd, pTimer, 250, nullptr);
 			}

@@ -341,11 +341,17 @@ int main()
 								else if (!turn) 
 								{
 									send(sock, "NOT YOUR TURN", 14, 0);
+									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
 								}
 								
 							}
 
 						}
+					}
+					else if (stringBuf == "i did it daddy") 
+					{
+					std::cout << "good job, son" << std::endl;
+					send(sock, "just something", 15, 0);
 					}
 					else 
 					{
