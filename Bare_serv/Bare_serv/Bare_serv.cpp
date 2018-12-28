@@ -249,8 +249,12 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening && outSock != sock)
 											{
-												send(outSock, "OK2" + controlInt, 4, 0);
-												std::cout << "OK2" << +controlInt << " Sent to other client" << std::endl;
+												ss.str("");
+												ss << "OK2" << controlInt;
+												std::string outboundString = ss.str();
+												// send(outSock, "OK1" + controlInt, 4, 0);
+												send(outSock, outboundString.c_str(), outboundString.size(), 0);
+												std::cout << outboundString << " Sent to other client" << std::endl;
 											}
 										}
 										switchTurn();
@@ -271,8 +275,12 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening && outSock != sock)
 											{
-												send(outSock, "NO2" + controlInt, 4, 0);
-												std::cout << "NO2" << +controlInt << " Sent to other client" << std::endl;
+												ss.str("");
+												ss << "NO2" << controlInt;
+												std::string outboundString = ss.str();
+												// send(outSock, "OK1" + controlInt, 4, 0);
+												send(outSock, outboundString.c_str(), outboundString.size(), 0);
+												std::cout << outboundString << " Sent to other client" << std::endl;
 											}
 										}
 									}
@@ -310,8 +318,12 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening && outSock != sock)
 											{
-												send(outSock, "OK1" + controlInt, 4, 0);
-												std::cout << "OK1" << +controlInt << " Sent to other client" << std::endl;
+												ss.str("");
+												ss << "OK1" << controlInt;
+												std::string outboundString = ss.str();
+												// send(outSock, "OK1" + controlInt, 4, 0);
+												send(outSock, outboundString.c_str(), outboundString.size(), 0);
+												std::cout << outboundString << " Sent to other client" << std::endl;
 											}
 										}
 										switchTurn();
@@ -332,8 +344,12 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening && outSock != sock)
 											{
-												send(outSock, "NO1" + controlInt, 4, 0);
-												std::cout << "NO1" << +controlInt << " Sent to other client" << std::endl;
+												ss.str("");
+												ss << "NO1" << controlInt;
+												std::string outboundString = ss.str();
+												// send(outSock, "OK1" + controlInt, 4, 0);
+												send(outSock, outboundString.c_str(), outboundString.size(), 0);
+												std::cout << outboundString << " Sent to other client" << std::endl;
 											}
 										}
 									}
