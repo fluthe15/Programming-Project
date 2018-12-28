@@ -56,6 +56,10 @@ void Client::Connect_To_Server(std::string IPADD, int PORT)
 		WSACleanup();
 		return;
 	}
+	else 
+	{
+		std::cout << "Connected to server!" << std::endl;
+	}
 
 	//here and up is connection to server
 
