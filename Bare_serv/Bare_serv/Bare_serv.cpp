@@ -16,6 +16,15 @@ void switchTurn();
 void closeClean();
 boolean checkForWin();
 
+std::string printboard();
+std::string movex(int pos);
+void moveo(int row, int col);
+int row;
+int col;
+const int ROWsnum = 3;
+const int COLsnum = 3;
+char board[COLsnum][ROWsnum] = { {' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '} };
+
 // here is our buffer, it contains all the data we send back and forth, consider it the stream of information
 char buf[4096];
 
@@ -171,7 +180,7 @@ int main()
 						ss << buf;
 						std::string stringBuf = ss.str();
 
-					std::cout << stringBuf << std::endl;
+					//std::cout << stringBuf << std::endl;
 						
 					// now to see if the message was a request for a tile
 					// by seeing if we get a digit as the first part of the string
@@ -399,6 +408,18 @@ int main()
 							}
 						}
 					}
+					else if (stringBuf == "print")
+					{
+						/*std::cout << "printing" << std::endl;*/
+						std::string tempBoard = printboard();
+						send(sock, "    A   B   C \n 1    |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ", tempBoard.length(), 0);
+					}
+					else if (stringBuf == "a1")
+					{
+					/*std::cout << "printing" << std::endl;*/
+					std::string tempBoard = movex(11);
+					send(sock, "    A   B   C \n 1  x |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ", tempBoard.length(), 0);
+					}
 					}
 
 					/*
@@ -456,6 +477,69 @@ void switchTurn()
 
 	turn = !turn;
 
+}
+
+std::string printboard()
+{
+	std::string emptyBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ";
+	/*std::cout << board[0][2] << " | " << board[1][2] << " | " << board[2][2] << std::endl;
+	std::cout << "----------" << std::endl;
+	std::cout << board[0][1] << " | " << board[1][1] << " | " << board[2][1] << std::endl;
+	std::cout << "----------" << std::endl;
+	std::cout << board[0][0] << " | " << board[1][0] << " | " << board[2][0] << std::endl;*/
+
+	return emptyBoard;
+}
+
+std::string movex(int pos)
+{
+	std::string placeXBoard;
+
+	/*board[col][row] = 'X';*/
+	if (pos == 11)
+	{
+		placeXBoard = "    A   B   C \n 1  x |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 21)
+	{
+		placeXBoard = "    A   B   C \n 1    | x |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 31)
+	{
+		placeXBoard = "    A   B   C \n 1    |   | x \n    ---------\n 2    |   |   \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 12)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2  x |   |   \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 22)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    | x |   \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 32)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    |   | x \n    ---------\n 3    |   |   ";
+	}
+	if (pos == 13)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    |   |   \n    ---------\n 3  x |   |   ";
+	}
+	if (pos == 23)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    | x |   ";
+	}
+	if (pos == 33)
+	{
+		placeXBoard = "    A   B   C \n 1    |   |   \n    ---------\n 2    |   |   \n    ---------\n 3    |   | x ";
+	}
+	
+
+	return placeXBoard;
+}
+
+void moveo(int row, int col)
+{
+	board[col][row] = 'O';
 }
 
 boolean checkForWin()
