@@ -320,9 +320,6 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening)
 											{
-												//ss.str("");
-												//ss << "OK1" << controlInt;
-												//std::string outboundString = ss.str();
 												ss.str("");
 												ss << "OK1" << controlInt;
 												std::string outboundString = ss.str();
@@ -363,6 +360,7 @@ int main()
 								{
 									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
 								}
+								send(sock, "", 1, 0);
 								
 							}
 

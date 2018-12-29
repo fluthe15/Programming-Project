@@ -113,14 +113,19 @@ std::string Client::recvMessage(char buf_[4096])
 	while (receiving)
 	{
 		// Wait for response
-		ZeroMemory(buf_, 4096);
-		int bytesReceived = recv(sock, buf_, 4096, 0);
-		// if we received something, stop listening..
-		if (bytesReceived > 0) { receiving = false; }
+	ZeroMemory(buf_, 4096);
+	int bytesReceived = recv(sock, buf_, 4096, 0);
+		 //if we received something, stop listening..
+		if (bytesReceived > 0) 
+		{ 
+		std::string returnString;
+		returnString = std::string(buf_, 0, bytesReceived);
+		return returnString;
+		receiving = false;
+		}
 	}
 	// convert msg received to string, and return it..
-	std::string returnString = buf_;
-	return returnString.c_str();
+	
 }
 
 void Client::graceDisconnect()

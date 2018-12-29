@@ -1,9 +1,9 @@
 ﻿  Bare_serv.cpp
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(245): warning C4018: '<': signed/unsigned mismatch
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(265): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(271): warning C4018: '<': signed/unsigned mismatch
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(314): warning C4018: '<': signed/unsigned mismatch
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(337): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(343): warning C4018: '<': signed/unsigned mismatch
-c:\users\nicol\documents\gitkraken\programming_mini_project\programming-project\bare_serv\bare_serv\bare_serv.cpp(392): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
-  Bare_serv.vcxproj -> C:\Users\nicol\Documents\Gitkraken\Programming_Mini_Project\Programming-Project\Bare_serv\Debug\Bare_serv.exe
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(245): warning C4018: '<': signed/unsigned mismatch
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(265): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(271): warning C4018: '<': signed/unsigned mismatch
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(314): warning C4018: '<': signed/unsigned mismatch
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(334): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(340): warning C4018: '<': signed/unsigned mismatch
+d:\gitkraken repo\programming-project\bare_serv\bare_serv\bare_serv.cpp(390): warning C4805: '==': unsafe mix of type 'boolean' and type 'bool' in operation
+  Bare_serv.vcxproj -> D:\GitKraken Repo\Programming-Project\Bare_serv\Debug\Bare_serv.exe

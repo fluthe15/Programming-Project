@@ -2,11 +2,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "Client.h"
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <windows.h>
-
+#pragma comment(lib, "ws2_32.lib")
 void printboard();
 void printWelcome();
 void movex(int row, int col);
@@ -18,65 +17,153 @@ const int COLsnum = 3;
 char board[COLsnum][ROWsnum] = { {' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '} };
 bool player = true;
 
+SOCKET sock1 = socket(AF_INET, SOCK_STREAM, 0);
+char buffer[4096];
+std::string userInput;
+
+int main() 
+{
+	std::string ipAddress = "127.0.0.1";			// IP Address of the server
+	int port = 54000;						// Listening port # on the server
+
+	// Initialize WinSock
+	WSAData data;
+	WORD ver = MAKEWORD(2, 2);
+	int wsResult = WSAStartup(ver, &data);
+	if (wsResult != 0)
+	{
+		std::cerr << "Can't start Winsock, Err #" << wsResult << std::endl;
+		return 0;
+	}
+
+	// Create socket
+	sock1 = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock1 == INVALID_SOCKET)
+	{
+		std::cerr << "Can't create socket, Err #" << WSAGetLastError() << std::endl;
+		WSACleanup();
+		return 0;
+	}
+
+	// Fill in a hint structure
+	sockaddr_in hint;
+	hint.sin_family = AF_INET;
+	hint.sin_port = htons(port);
+	inet_pton(AF_INET, ipAddress.c_str(), &hint.sin_addr);
+
+	// Connect to server
+	int connResult = connect(sock1, (sockaddr*)&hint, sizeof(hint));
+	if (connResult == SOCKET_ERROR)
+	{
+		std::cerr << "Can't connect to server, Err #" << WSAGetLastError() << std::endl;
+		closesocket(sock1);
+		WSACleanup();
+		return 0;
+	}
+	else
+	{
+		std::cout << "Connected to server!" << std::endl;
+	}
+
+
+
+
+	do 
+	{
+		printboard();
+		int bytesReceived;
+		std::getline(std::cin, userInput);
+
+		if (userInput.size() >= 0) 
+		{
+			int sendResult = send(sock1, userInput.c_str(), userInput.size() + 1, 0);
+
+			if (sendResult != SOCKET_ERROR)
+			{
+				// Wait for response
+				ZeroMemory(buffer, 4096);
+				bytesReceived = recv(sock1, buffer, 4096, 0);
+				/*
+				if (bytesReceived > 0)
+				{
+					std::string result = std::string(buffer, 0, bytesReceived);
+					if (result == "OK11") 
+					{
+						std::cout << "NICE MOVE!" << std::endl;
+						movex(2, 0);
+					}
+				}
+				*/
+			}
+		}
+		else if (bytesReceived > 0) 
+		{
+			std::string result = std::string(buffer, 0, bytesReceived);
+			if (result == "OK11")
+			{
+				movex(2, 0);
+				printboard();
+			}
+			else if (result == "OK22") 
+			{
+				moveo(2, 1);
+				printboard();
+			}
+		}
+	
+	} while (userInput.size() > 0);
+
+	//return 0;
+}
+
+
+
+
+/*
 int main()
 {
 	Client cObject;
 	cObject.Connect_To_Server("127.0.0.1", 54000);
 	
-
-	printboard();
 	printWelcome();
 
 	cObject.sendMessage("valueOfTurn");
-	if (cObject.recvMessage(cObject.buf) == "yes")
+	if (cObject.recvMessage(cObject.buffer) == "yes")
 	{
 		player = true;
 	}
-	else if (cObject.recvMessage(cObject.buf) == "no")
+	else if (cObject.recvMessage(cObject.buffer) == "no")
 	{
 		player = false;
 	}
 
-	
+	memset(cObject.buffer, 0,4096);
+	boolean request = false;
 
 	while (true) 
 	{
 
-		// first, get the users input
-		std::string userInput; 
-		std::getline(std::cin, userInput);
-		
-
-		// then send a request based on that input, and wait for a response!
-
-		//if (cObject.recvMessage(cObject.buf) == "someone won!") 
+		//if (cObject.recvMessage(cObject.buffer) == "someone won!") 
 		//{
 		//	// the game is over, show the winner! 
 		//}
 
-		if (userInput == "turn") 
+		if (cObject.recvMessage(cObject.buffer).length() > 0) 
 		{
-			cObject.sendMessage("valueOfTurn");
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "yes")
+			request = false;
+			//turn return
+			std::string message = cObject.recvMessage(cObject.buffer);
+			if (cObject.recvMessage(cObject.buffer) == "yes")
 			{
 				std::cout << "Yes it's your turn!" << std::endl;
 			}
-			else if (message == "no") 
+			else if (cObject.recvMessage(cObject.buffer) == "no")
 			{
 				std::cout << "No it's not your turn!" << std::endl;
 			}
 
-			// if it is your turn when you ask the very first time, then you are player 1!!!! 
-		}
-		else if (userInput == "A1" || userInput == "a1" || userInput == "1") 
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("1");
-
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK11" || message == "OK21") 
+			// 1 return
+			else if (message == "OK11" || message == "OK21")
 			{
 				if (player)
 				{
@@ -88,25 +175,20 @@ int main()
 					moveo(2, 0);
 					printboard();
 				}
-				
+
 			}
-			else if (message == "NO1" || message == "NO2") 
+			else if (message == "NO1" || message == "NO2")
 			{
 				// that spot is taken
 			}
-			else if (message == "not your turn!") 
+			else if (message == "not your turn!")
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "A2" || userInput == "a2" || userInput == "2")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("2");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK12" || message == "OK22")
+
+			// 2 return
+			else if (message == "OK12" || message == "OK22")
 			{
 				if (player)
 				{
@@ -128,15 +210,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "A3" || userInput == "a3" || userInput == "3")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("3");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK13" || message == "OK23")
+
+			// 3 return
+			else if (message == "OK13" || message == "OK23")
 			{
 				if (player)
 				{
@@ -158,15 +235,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "B1" || userInput == "b1" || userInput == "4")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("4");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK14" || message == "OK24")
+
+			// 4 return
+			else if (message == "OK14" || message == "OK24")
 			{
 				if (player)
 				{
@@ -188,15 +260,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "B2" || userInput == "b2" || userInput == "5")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("5");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK15" || message == "OK25")
+
+			// 5 return
+			else if (message == "OK15" || message == "OK25")
 			{
 				if (player)
 				{
@@ -218,15 +285,11 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "B3" || userInput == "b3" || userInput == "6")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("6");
-
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK16" || message == "OK26")
+			
+			
+			
+			// 6 return
+			else if (message == "OK16" || message == "OK26")
 			{
 				if (player)
 				{
@@ -248,15 +311,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "C1" || userInput == "c1" || userInput == "7")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("7");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK17" || message == "OK27")
+
+			// 7 return
+			else if (message == "OK17" || message == "OK27")
 			{
 				if (player)
 				{
@@ -278,15 +336,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "C2" || userInput == "c2" || userInput == "8")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("8");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK18" || message == "OK28")
+
+			// 8 return
+			else if (message == "OK18" || message == "OK28")
 			{
 				if (player)
 				{
@@ -308,15 +361,10 @@ int main()
 			{
 				// its not your turn
 			}
-		}
-		else if (userInput == "C3" || userInput == "c3" || userInput == "9")
-		{
-			// we ask the server to place X/0 at 1
-			// and wait for response
-			cObject.sendMessage("9");
 
-			std::string message = cObject.recvMessage(cObject.buf);
-			if (message == "OK19" || message == "OK29")
+
+			// 9 return
+			else if (message == "OK19" || message == "OK29")
 			{
 				if (player)
 				{
@@ -338,12 +386,107 @@ int main()
 			{
 				// its not your turn
 			}
+			else request = true;
+
 		}
+		else if (cObject.recvMessage(cObject.buffer).length() <= 0 || request == true)
+		{
+			// first, get the users input
+			std::string userInput;
+			std::getline(std::cin, userInput);
+
+			if (userInput == "turn")
+			{
+				cObject.sendMessage("valueOfTurn");				
+				// if it is your turn when you ask the very first time, then you are player 1!!!! 
+			}
+			
+			
+			else if (userInput == "A1" || userInput == "a1" || userInput == "1")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("1");
+
+				
+				
+			}
+			else if (userInput == "A2" || userInput == "a2" || userInput == "2")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("2");
+
+				
+			}
+
+
+			else if (userInput == "A3" || userInput == "a3" || userInput == "3")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("3");
+
+				
+			}
+
+
+			else if (userInput == "B1" || userInput == "b1" || userInput == "4")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("4");
+				
+
+			}
+
+
+			else if (userInput == "B2" || userInput == "b2" || userInput == "5")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("5");
+
+				
+			}
+
+			else if (userInput == "B3" || userInput == "b3" || userInput == "6") 
+			{
+				cObject.sendMessage("6");
+			
+			}
+			else if (userInput == "C1" || userInput == "c1" || userInput == "7")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("7");
+				
+			}
+			else if (userInput == "C2" || userInput == "c2" || userInput == "8")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("8");
+
+				
+			}
+
+
+			else if (userInput == "C3" || userInput == "c3" || userInput == "9")
+			{
+				// we ask the server to place X/0 at 1
+				// and wait for response
+				cObject.sendMessage("9");
+				
+			}
+		}
+		
 
 		
 	}
 
 }
+*/
 
 void printboard()
 {
