@@ -176,7 +176,7 @@ int main()
 					// now to see if the message was a request for a tile
 					// by seeing if we get a digit as the first part of the string
 					// (a little unsafe if we get chat working, OBS)
-					if(isdigit(stringBuf.at(0)))
+					if(isdigit(stringBuf.at(0)) && stringBuf.length() > 0)
 					{
 						// we create a switchint of the string (the string as an int)
 					// and also a controlInt, to save which tile the client wanted..
@@ -213,6 +213,8 @@ int main()
 						case 9:
 							controlInt = 9;
 							break;
+						case 0:
+							controlInt = 0;
 						default:
 							controlInt = 0;
 							break;
@@ -291,6 +293,23 @@ int main()
 								else if (turn)
 								{
 									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
+									for (int i = 0; i < master.fd_count; i++)
+									{
+										// .. so we treat the i'th element of all the sockets in the FD set:
+										SOCKET outSock = master.fd_array[i];
+										// and if they are not a listening socket..
+										// here we could also do != sock, if we did not want the message
+										// to go back to the one that sent it..
+										if (outSock != listening)
+										{
+											ss.str("");
+											ss << "NOTURN";
+											std::string outboundString = ss.str();
+											// send(outSock, "OK1" + controlInt, 4, 0);
+											send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+											std::cout << outboundString << " Sent" << std::endl;
+										}
+									}
 								}
 								
 							}
@@ -359,20 +378,44 @@ int main()
 								else if (!turn) 
 								{
 									std::cout << "SOMEONE TRIED TO BREAK IN!" << std::endl;
+									for (int i = 0; i < master.fd_count; i++)
+									{
+										// .. so we treat the i'th element of all the sockets in the FD set:
+										SOCKET outSock = master.fd_array[i];
+										// and if they are not a listening socket..
+										// here we could also do != sock, if we did not want the message
+										// to go back to the one that sent it..
+										if (outSock != listening)
+										{
+											ss.str("");
+											ss << "NOTURN";
+											std::string outboundString = ss.str();
+											// send(outSock, "OK1" + controlInt, 4, 0);
+											send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
+											std::cout << outboundString << " Sent" << std::endl;
+										}
+									}
 								}
 								send(sock, "", 1, 0);
 								
 							}
 
 						}
+						else if (controlInt == 0 || stringBuf == "update")
+						{
+						send(sock, "update", 7, 0);
+						std::cout << "updated clients grid" << std::endl;
+						}
 					}
+
 					else if (stringBuf == "i did it daddy") 
 					{
 
 					//std::cout << "good job, son" << std::endl;
 					send(sock, "just something", 15, 0);
 					}
-					else if (stringBuf == "valueOfTurn")
+
+					else if (stringBuf == "turn")
 					{
 						if (sock == master.fd_array[2])
 						{

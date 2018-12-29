@@ -5,6 +5,7 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <windows.h>
+#include <stdlib.h>
 #pragma comment(lib, "ws2_32.lib")
 void printboard();
 void printWelcome();
@@ -65,39 +66,79 @@ int main()
 		std::cout << "Connected to server!" << std::endl;
 	}
 
-
+	printWelcome();
 
 
 	do 
 	{
-		printboard();
+		//printboard();
 		int bytesReceived;
 		std::getline(std::cin, userInput);
 
 		if (userInput.size() >= 0) 
 		{
+			
 			int sendResult = send(sock1, userInput.c_str(), userInput.size() + 1, 0);
 
 			if (sendResult != SOCKET_ERROR)
 			{
-				// Wait for response
 				ZeroMemory(buffer, 4096);
 				bytesReceived = recv(sock1, buffer, 4096, 0);
-				/*
-				if (bytesReceived > 0)
+				std::string result = std::string(buffer, 0, bytesReceived);
+				if (result == "OK11")
 				{
-					std::string result = std::string(buffer, 0, bytesReceived);
-					if (result == "OK11") 
-					{
-						std::cout << "NICE MOVE!" << std::endl;
-						movex(2, 0);
-					}
+					system("CLS");
+					movex(2, 0);
+					printboard();
 				}
-				*/
+				else if (result == "OK21")
+				{
+					system("CLS");
+					moveo(2, 0);
+					printboard();
+				}
+				else if (result == "OK12") 
+				{
+					system("CLS");
+					movex(2, 1);
+					printboard();
+				}
+				else if (result == "OK22") 
+				{
+					system("CLS");
+					moveo(2, 1);
+					printboard();
+				}
+				else if (result == "NO1" || result == "NO2") 
+				{
+					std::cout << "invalid mode, try again!" << std::endl;
+				}
+				else if (result == "NOTURN") 
+				{
+					system("CLS");
+					std::cout << "not your turn, please wait" << std::endl;
+					printboard();
+				}
+				else if (result == "yes") 
+				{
+					std::cout << "it is your turn" << std::endl;
+				}
+				else if (result == "no") 
+				{
+					std::cout << "it is not your turn" << std::endl;
+				}
+				else if (result == "update") 
+				{
+					printboard();
+				}
+				
 			}
 		}
 		else if (bytesReceived > 0) 
 		{
+			/*
+			ZeroMemory(buffer, 4096);
+			bytesReceived = recv(sock1, buffer, 4096, 0);
 			std::string result = std::string(buffer, 0, bytesReceived);
 			if (result == "OK11")
 			{
@@ -109,6 +150,7 @@ int main()
 				moveo(2, 1);
 				printboard();
 			}
+			*/
 		}
 	
 	} while (userInput.size() > 0);
