@@ -14,6 +14,7 @@
 void resetValues();
 void switchTurn();
 void closeClean();
+std::string assembleGrid();
 boolean checkForWin();
 
 // here is our buffer, it contains all the data we send back and forth, consider it the stream of information
@@ -23,7 +24,7 @@ char buf[4096];
 struct Tile
 {
 	// we have 9 tiles, A1 = 1, A2 = 2 etc.
-	int number;
+	std::string symbol;
 	// true means occupied, false means vacant
 	boolean state;
 	// owner should reflect which socket/client occupies a tile, if any
@@ -253,12 +254,16 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening)
 											{
+												std::string sendOut = assembleGrid();
+												send(outSock, sendOut.c_str(), sendOut.length(), 0);
+												/*
 												ss.str("");
-												ss << "OK2" << controlInt;
+												ss << "OK1" << controlInt;
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
 												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
 												std::cout << outboundString << " Sent" << std::endl;
+												*/
 											}
 										}
 										switchTurn();
@@ -339,12 +344,16 @@ int main()
 											// to go back to the one that sent it..
 											if (outSock != listening)
 											{
+												std::string sendOut = assembleGrid();
+												send(outSock, sendOut.c_str(), sendOut.length(), 0);
+												/*
 												ss.str("");
 												ss << "OK1" << controlInt;
 												std::string outboundString = ss.str();
 												// send(outSock, "OK1" + controlInt, 4, 0);
 												send(outSock, outboundString.c_str(), outboundString.size() + 1, 0);
 												std::cout << outboundString << " Sent" << std::endl;
+												*/
 											}
 										}
 										switchTurn();
@@ -618,12 +627,32 @@ boolean checkForWin()
 	return aWin;
 }
 
+std::string assembleGrid() 
+{
+	std::string symbols[9];
+	for (int i = 0; i < 9; i++) 
+	{
+		if (tiles[i].owner == "P1")
+		{
+			symbols[i] = "X";
+		}
+		else if (tiles[i].owner == "P2")
+		{
+			symbols[i] = "0";
+		}
+		else symbols[i] = " ";
+	}
+	
+	std::string board = "|" + symbols[0] + "|" + symbols[1] + "|" + symbols[2] + "| \r\n" + "|" + symbols[3] + "|" + symbols[4] + "|" + symbols[5] + "| \r\n" + "|" + symbols[6] + "|" + symbols[7] + "|" + symbols[8] + "| \r\n";
+	return board;
+}
+
 void resetValues()
 {
 	// reset all tiles
 	for (int i = 0; i < 9; i++)
 	{
-		tiles[i].number = i;
+		tiles[i].symbol = "";
 		tiles[i].state = false;
 		tiles[i].owner = "none";
 	}
