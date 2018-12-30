@@ -65,9 +65,9 @@ int main()
 	}
 
 	ZeroMemory(&hints, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_family = AF_UNSPEC; // Unspecified adress family, can be either IPv4, IPv6, etc.
+	hints.ai_socktype = SOCK_STREAM; // Sock stream for TCP socket
+	hints.ai_protocol = IPPROTO_TCP; // Use of TCP protocol
 
 	std::cout << "Connecting \n";
 
@@ -105,13 +105,14 @@ int main()
 
 	freeaddrinfo(result);
 
+	// Display error message if invalid socket
 	if (client.sock == INVALID_SOCKET) {
 		std::cout << "cannot connect to sever get lost!" << std::endl;
 		WSACleanup();
 		system("on hold");
 		return 1;
 	}
-
+	// Display message if client connected to server
 	std::cout << " Connected :)" << std::endl;
 
 	//Obtain id from server for this client;
@@ -151,11 +152,12 @@ int main()
 	if (Result == SOCKET_ERROR) {
 		std::cout << "shutdown failed: " << WSAGetLastError() << std::endl;
 		closesocket(client.sock);
-		WSACleanup();
+		WSACleanup(); // Terminate use of Winsock 2 DLL
 		system("on hold");
 		return 1;
 	}
 
+	// Graceful disconnect
 	closesocket(client.sock);
 	WSACleanup();
 	system("on hold!");
