@@ -8,46 +8,64 @@
 
 #pragma comment (lib, "Ws2_32.lib")
 
+// Definening the Ip address and the port number to connect to
 #define IP_ADDRESS "127.0.0.1"
 #define DEFAULT_PORT "54000"
-// the default buffer length for when messeging back and forth
+
+// Setting up the default buffer lenght for the messages sent
 #define DEFAULT_BUFLEN 512
 
-// comment here!
+// Setting up a data strcture with the name clientType containing an integer for client 
+// identification and a type refference for socket.
 struct clientType
 {
 	int clientID;
 	SOCKET socket;
 };
 
+// Setting up constants because they dont need to be changed
 const char OPTION_VALUE = 1;
 const int MAX_CLIENT_AMOUNT = 5;
 
-// comment here! - this is declaring the methods below
+// Method processClient are declared
 int processClient(clientType &newClient, std::vector<clientType> &clientArray, std::thread &thread);
 int main();
 
 // comment here!
+// This is the method called processClient.
 int processClient(clientType &newClient, std::vector<clientType> &clientArray, std::thread &thread)
 {
+	//A string named message and a char named tempMessage with the lenght of the default buffer
+	//is both declared and initialized.
 	std::string message = "";
 	char tempMessage[DEFAULT_BUFLEN] = "";
 
+
 	while (1)
 	{
+		//Sets the first number of bytes (DEFAULT_BUFLEN) of the block of memory pointed by 
+		//ptr (tempMessage) to the specified value (0)
 		memset(tempMessage, 0, DEFAULT_BUFLEN);
 
+		//Checks if the new client is not equal to 0.
 		if (newClient.socket != 0)
 		{
+			//Initialization of the integer result. It is set to be equal to what is recived from the new client
+			//such as socket, a message, the default lenght and a value.
 			int result = recv(newClient.socket, tempMessage, DEFAULT_BUFLEN, 0);
 
+			//Checks if an error had occoured, if not then it proceeds to take message recieved
+			//and then display it with client number and what the content of the message is.
 			if (result != SOCKET_ERROR)
 			{
 				if (strcmp("", tempMessage))
 					message = "Client #" + std::to_string(newClient.clientID) + ": " + tempMessage;
-
+				
+				//Here it outputs the message to the server console
 				std::cout << message.c_str() << std::endl;
 
+				//here it takes the message and the client number and send it to all other clients that is not
+				//the original sender.
 				for (int i = 0 ; i < MAX_CLIENT_AMOUNT ; i++)
 				{
 					if (clientArray[i].socket != INVALID_SOCKET)
@@ -55,16 +73,21 @@ int processClient(clientType &newClient, std::vector<clientType> &clientArray, s
 							result = send(clientArray[i].socket, message.c_str(), strlen(message.c_str()), 0);
 				}
 			}
+
+			//If error orcoured then client number is disconnected.
 			else
 			{
 				message = "Client #" + std::to_string(newClient.clientID) + " Disconnected";
 
+				//Here the message about disconnection is written to the server console
 				std::cout << message << std::endl;
 
+				//The sockets for that client is then closed and the socket is set to be invalid
 				closesocket(newClient.socket);
 				closesocket(clientArray[newClient.clientID].socket);
 				clientArray[newClient.clientID].socket = INVALID_SOCKET;
 
+				//If the socket is not invalid send a message
 				for (int i = 0; i < MAX_CLIENT_AMOUNT; i++)
 				{
 					if (clientArray[i].socket != INVALID_SOCKET)
@@ -74,8 +97,8 @@ int processClient(clientType &newClient, std::vector<clientType> &clientArray, s
 				break;
 			}
 		}
-	} //end while
-
+	}
+	//When the while loop is broken the thread is then detached.
 	thread.detach();
 
 	return 0;
@@ -93,7 +116,7 @@ int main()
 	int tempID = -1;
 	std::thread my_thread[MAX_CLIENT_AMOUNT];
 
-	//Initialize Winsock
+	// Here the Winsock is initialized and displays a message in the server confirming it
 	std::cout << "Intializing Winsock..." << std::endl;
 	WSAStartup(MAKEWORD(2, 2), &wsaData);
 
