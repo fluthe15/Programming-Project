@@ -127,7 +127,11 @@ int main()
 		while (1)
 		{
 			std::getline(std::cin, sent_message);
-			Result = send(client.sock, sent_message.c_str(), strlen(sent_message.c_str()), 0);
+			if (sent_message != "") 
+			{
+				Result = send(client.sock, sent_message.c_str(), strlen(sent_message.c_str()), 0);
+			}
+		
 
 			if (Result <= 0)
 			{

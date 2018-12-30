@@ -32,7 +32,7 @@ int processClient(clientType &newClient, std::vector<clientType> &clientArray, s
 int main();
 
 // comment here!
-// This is the method called processClient.
+// This is the method called processClient, which is called in its own seperate thread
 int processClient(clientType &newClient, std::vector<clientType> &clientArray, std::thread &thread)
 {
 	//A string named message and a char named tempMessage with the lenght of the default buffer
@@ -74,7 +74,7 @@ int processClient(clientType &newClient, std::vector<clientType> &clientArray, s
 				}
 			}
 
-			//If error orcoured then client number is disconnected.
+			//If error orcoured then show client is disconnected.
 			else
 			{
 				message = "Client #" + std::to_string(newClient.clientID) + " Disconnected";
@@ -106,6 +106,8 @@ int processClient(clientType &newClient, std::vector<clientType> &clientArray, s
 
 int main()
 {
+
+	// variables needed for the winsock protocol
 	WSADATA wsaData;
 	struct addrinfo hints;
 	struct addrinfo *server = NULL;
@@ -155,6 +157,7 @@ int main()
 
 	while (1)
 	{
+		// we do some resetting, accept the connection to the server, and do some error checking
 		SOCKET incoming = INVALID_SOCKET;
 		incoming = accept(serverSocket, NULL, NULL);
 
@@ -163,7 +166,7 @@ int main()
 		//Reset the number of clients
 		numberOfClients = -1;
 
-		//Create a temporary id for the next client
+		//Create a temporary id for the next client so we can tell them apart and use it as a prefix
 		tempID = -1;
 		for (int i = 0; i < MAX_CLIENT_AMOUNT; i++)
 		{
@@ -182,7 +185,7 @@ int main()
 
 		if (tempID != -1)
 		{
-			//Send the id to that client
+			//Send the id to that client, and show it as accepted in server
 			std::cout << "Client #" << client[tempID].clientID << " Accepted" << std::endl;
 			message = std::to_string(client[tempID].clientID);
 			send(client[tempID].socket, message.c_str(), strlen(message.c_str()), 0);
@@ -192,6 +195,7 @@ int main()
 		}
 		else
 		{
+			// in case we are full up on clients, send a message to the connectee.
 			message = "Server is full";
 			send(incoming, message.c_str(), strlen(message.c_str()), 0);
 			std::cout << message << std::endl;
